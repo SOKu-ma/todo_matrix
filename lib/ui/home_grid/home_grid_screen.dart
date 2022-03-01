@@ -15,7 +15,6 @@ class HomeGrid extends ConsumerWidget {
     final _horizonalText = ref.watch(horizonalText);
 
     return Container(
-      // color: Colors.redAccent,
       child: Row(
         children: [
           RotatedBox(
@@ -98,8 +97,9 @@ class HomeGridTile extends ConsumerWidget {
       margin: const EdgeInsets.all(10),
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          border: Border.all(color: _color)),
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(color: _color),
+      ),
       child: GridTile(
         child: Center(
           child: ListView(children: [
