@@ -11,7 +11,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _color = ref.watch(appColorProvider);
-    // final _colorNotifier = ref.watch(appColorProvider.notifier);
+    final _colorNotifier = ref.watch(appColorProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -37,9 +37,6 @@ class HomeScreen extends ConsumerWidget {
             context: context,
             builder: (BuildContext context) {
               return TodoMake();
-              // return Container(
-              //   child: Center(child: Text("追加画面")),
-              // );
             },
           );
         },
