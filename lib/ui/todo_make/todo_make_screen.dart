@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_matrix/model/TodoModel.dart';
+import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 enum Category {
   importantUrgent, // 第1領域 緊急かつ重要
@@ -9,8 +10,7 @@ enum Category {
   unImportantUnUrgent, // 第4領域 緊急でないかつ重要でない
 }
 
-final textTitleController = TextEditingController();
-final textSubTitleController = TextEditingController();
+final _formKey = GlobalKey<FormState>();
 
 class TodoMake extends ConsumerWidget {
   const TodoMake({Key? key}) : super(key: key);
@@ -23,25 +23,36 @@ class TodoMake extends ConsumerWidget {
     final _todoModel = ref.watch(todoModelProvider);
     final _todoModelNotifier = ref.watch(todoModelProvider.notifier);
 
+    final _todoTitle = ref.watch(todoTitleProvider);
+    final _todoTitleNotifier = ref.watch(todoTitleProvider.notifier);
+
     return Column(
       children: [
         const SizedBox(height: 30),
         Container(
           margin:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-          child: TextField(
+          child: TextFormField(
             decoration: const InputDecoration(hintText: "タスクを追加"),
-            controller: textTitleController,
+            controller: _todoTitle,
+            key: _formKey,
+            validator: (value) {
+              if (value == "") {
+                return 'タスクを入力してください';
+              }
+              return null;
+            },
+            onChanged: (value) {
+              print("onChangeイベント：" + value);
+            },
+            onSaved: (value) {
+              print("onSaveイベント：" + value!);
+            },
+            onFieldSubmitted: (value) {
+              print("onFieldSubmittedイベント：" + value);
+            },
           ),
         ),
-        // Container(
-        //   margin:
-        //       const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
-        //   child: TextField(
-        //     decoration: const InputDecoration(hintText: "タスクの詳細を追加"),
-        //     controller: textSubTitleController,
-        //   ),
-        // ),
         const SizedBox(height: 30),
         Container(
           width: double.infinity,
@@ -86,10 +97,30 @@ class TodoMake extends ConsumerWidget {
           height: 40,
           child: ElevatedButton(
             onPressed: () {
+              // テキストnullチェック
+              if (_todoTitleNotifier.brankCheck(_todoTitle) != null) {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text(
+                      "タスクを入力してください",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(context);
+                          },
+                          child: const Text("OK"))
+                    ],
+                  ),
+                );
+                return;
+              }
               // Todoモデルに保存
-              TodoModel _todo = TodoModel(textTitleController.text,
-                  textSubTitleController.text, false, _selected);
+              TodoModel _todo = TodoModel(_todoTitle.text, false, _selected);
               _todoModelNotifier.add(_todo);
+              _todoTitle.text = "";
               Navigator.of(context, rootNavigator: true).pop(context);
             },
             child: const Text("保存", style: TextStyle(fontSize: 18)),

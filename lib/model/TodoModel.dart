@@ -1,33 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
-
-// カテゴリー選択用Provider
-final selectCategoryProvider = StateNotifierProvider(
-  (ref) => SelectCategoryNotifier(Category.importantUrgent),
-);
-
-class SelectCategoryNotifier extends StateNotifier<Category> {
-  SelectCategoryNotifier(state) : super(state);
-
-  select(var category) {
-    switch (category) {
-      case Category.importantUrgent:
-        state = Category.importantUrgent;
-        break;
-      case Category.importantUnUrgent:
-        state = Category.importantUnUrgent;
-        break;
-      case Category.unImportantUrgent:
-        state = Category.unImportantUrgent;
-        break;
-      case Category.unImportantUnUrgent:
-        state = Category.unImportantUnUrgent;
-        break;
-      default:
-        break;
-    }
-  }
-}
 
 // TodoモデルProvider
 final todoModelProvider =
@@ -38,19 +9,23 @@ final todoModelProvider =
 class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
   TodoModelNotifier(List<TodoModel> state) : super(state);
 
+  // Todo追加メソッド
   void add(TodoModel todo) {
     // ドット3つでStateにtodoをappendしてくれる
     state = [...state, todo];
   }
 
+  // Todo削除メソッド
   void delete(TodoModel todo) {
     //
   }
 
+  // Todoカテゴリー変更メソッド
   void selectCategory(TodoModel todo) {
     //
   }
 
+  // Todoのチェック切替メソッド
   void cheak(TodoModel todo) {
     //
   }
@@ -63,11 +38,16 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
 // Todoモデル
 class TodoModel {
   String title;
-  String subTitle;
+  // String subTitle;
   bool isChecked;
   var category;
 
-  TodoModel(this.title, this.subTitle, this.isChecked, this.category);
+  TodoModel(
+    this.title,
+    // this.subTitle,
+    this.isChecked,
+    this.category,
+  );
 }
 
 // Todoモデルをリストで管理

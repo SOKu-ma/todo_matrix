@@ -1,9 +1,11 @@
+import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_matrix/common/common.dart';
 import 'package:todo_matrix/component/todo_list_view_model.dart';
 import 'package:todo_matrix/model/TodoModel.dart';
 import 'package:todo_matrix/ui/home_grid/home_grid_view_model.dart';
+import 'package:todo_matrix/ui/todo_detail/todo_detail_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
 
 enum Category {
@@ -67,21 +69,24 @@ class HomeDivide extends ConsumerWidget {
                   child: Row(
                     children: [
                       Expanded(
-                        child: GestureDetector(
-                          onLongPress: () {
-                            print("第一領域長押し");
-                          },
-                          child: Container(
-                            color: Colors.red[100],
-                            child: ListView(
-                              children: [
-                                // Todo0件の場合
-                                for (final todo in _todoModel)
-                                  // 重要かつ緊急のタスク
-                                  // TODO 分岐方法を検討
-                                  if ((todo.category).toString() ==
-                                      "Category.importantUrgent")
-                                    CheckboxListTile(
+                        child: OpenContainer(
+                          // closedColor: Colors.redAccent,
+                          // openColor: Colors.redAccent,
+                          // middleColor: Colors.black,
+                          transitionType: ContainerTransitionType.fade,
+                          closedElevation: 0,
+                          transitionDuration: const Duration(milliseconds: 150),
+                          closedBuilder: (context, VoidCallback action) =>
+                              ListView(
+                            children: [
+                              // Todo0件の場合
+                              for (final todo in _todoModel)
+                                // 重要だが緊急でないタスク
+                                // TODO 分岐方法を検討
+                                if ((todo.category).toString() ==
+                                    "Category.importantUrgent")
+                                  Card(
+                                    child: CheckboxListTile(
                                       dense: true,
                                       contentPadding:
                                           const EdgeInsets.only(left: 5),
@@ -92,12 +97,47 @@ class HomeDivide extends ConsumerWidget {
                                       ),
                                       onChanged: (val) {},
                                     ),
-                                _emptyTodo(context),
-                              ],
-                            ),
+                                  ),
+                              _emptyTodo(context, Category.importantUrgent),
+                            ],
                           ),
+                          // オープン時の画面では戻る用のボタンが必要
+                          openBuilder: (BuildContext c, VoidCallback action) =>
+                              TodoDetail(Category.importantUrgent.name),
+                          // openShape: const RoundedRectangleBorder(
+                          //     borderRadius: BorderRadius.zero),
+                          tappable: true,
                         ),
+
+                        /// -----------------------------------------------------------
+                        // child: ListView(
+                        //   children: [
+                        //     ListTile(
+                        //       leading: Hero(
+                        //         tag: "aaa",
+                        //         child: Text("aaa"),
+                        //       ),
+                        //       onTap: () {
+                        //         Navigator.of(context).push(
+                        //           MaterialPageRoute<void>(
+                        //             builder: (BuildContext context) => Scaffold(
+                        //               appBar: AppBar(
+                        //                 title:
+                        //                     Text(Category.importantUrgent.name),
+                        //               ),
+                        //               body: TodoDetail(
+                        //                   Category.importantUrgent.name),
+                        //             ),
+                        //           ),
+                        //         );
+                        //       },
+                        //     ),
+                        //     _emptyTodo(context, Category.importantUnUrgent),
+                        //   ],
+                        // ),
+                        /// -----------------------------------------------------------
                       ),
+
                       const VerticalDivider(
                           color: Colors.grey, indent: 0, thickness: 2),
                       // 第2領域
@@ -149,7 +189,12 @@ class HomeDivide extends ConsumerWidget {
                                           ),
                                           onChanged: (val) {},
                                         ),
-                                    _emptyTodo(context),
+                                    _emptyTodo(
+                                        context, Category.importantUnUrgent),
+                                    // TODO 詳細画面へ遷移するようのListTileも必要か？？？
+                                    // _moveTodoDetail(
+                                    //     context, Category.importantUnUrgent),
+                                    ListTile(),
                                   ],
                                 ),
                               ),
@@ -192,7 +237,8 @@ class HomeDivide extends ConsumerWidget {
                                         ),
                                         onChanged: (val) {},
                                       ),
-                                  _emptyTodo(context),
+                                  _emptyTodo(
+                                      context, Category.unImportantUrgent),
                                 ],
                               ),
                             ),
@@ -225,7 +271,8 @@ class HomeDivide extends ConsumerWidget {
                                         ),
                                         onChanged: (val) {},
                                       ),
-                                  _emptyTodo(context),
+                                  _emptyTodo(
+                                      context, Category.unImportantUnUrgent),
                                 ],
                               ),
                             ),
@@ -236,14 +283,11 @@ class HomeDivide extends ConsumerWidget {
                   ),
                 ),
                 // 重要度（低）ラベル
-                Container(
-                  color: Colors.lightBlue,
-                  child: Center(
-                    child: RichText(
-                      text: TextSpan(
-                        text: _verticalText + strLow,
-                        style: DefaultTextStyle.of(context).style,
-                      ),
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: _verticalText + strLow,
+                      style: DefaultTextStyle.of(context).style,
                     ),
                   ),
                 ),
@@ -251,15 +295,12 @@ class HomeDivide extends ConsumerWidget {
             ),
           ),
           // 緊急度（低）ラベル
-          Container(
-            // color: Colors.red[100],
-            child: RotatedBox(
-              quarterTurns: 1,
-              child: RichText(
-                text: TextSpan(
-                  text: _horizonalText + strLow,
-                  style: DefaultTextStyle.of(context).style,
-                ),
+          RotatedBox(
+            quarterTurns: 1,
+            child: RichText(
+              text: TextSpan(
+                text: _horizonalText + strLow,
+                style: DefaultTextStyle.of(context).style,
               ),
             ),
           ),
@@ -268,7 +309,8 @@ class HomeDivide extends ConsumerWidget {
     );
   }
 
-  _emptyTodo(BuildContext context) {
+  // TODO 後で消す？？？
+  _emptyTodo(BuildContext context, Category category) {
     return ListTile(
       title: const Text("＋ タスクを追加", style: TextStyle(fontSize: 16)),
       // leading: const Icon(Icons.add, size: 20),
@@ -293,4 +335,8 @@ class HomeDivide extends ConsumerWidget {
       },
     );
   }
+
+  // TODO 詳細画面へ遷移するようのリストも追加する？？？
+  // ListViewがいっぱいになると遷移できなくなる可能性がある
+  _moveTodoDetail() {}
 }
