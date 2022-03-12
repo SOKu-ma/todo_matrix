@@ -14,33 +14,34 @@ class HomeScreen extends ConsumerWidget {
     final _colorNotifier = ref.watch(appColorProvider.notifier);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(""),
-      ),
+      appBar: AppBar(),
       drawer: Drawer(
           child: DrawerScreen(
         color: _color,
       )),
       body: const SafeArea(child: HomeDivide()),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet<void>(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            barrierColor: Colors.black.withAlpha(1),
-            backgroundColor: Colors.white,
-            constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.95),
-            isDismissible: true,
-            isScrollControlled: true,
-            context: context,
-            builder: (BuildContext context) {
-              return TodoMake();
-            },
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 60),
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet<void>(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              barrierColor: Colors.black.withAlpha(1),
+              backgroundColor: Colors.white,
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.95),
+              isDismissible: true,
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return TodoMake();
+              },
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

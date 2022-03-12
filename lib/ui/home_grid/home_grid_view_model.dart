@@ -15,5 +15,6 @@ class TodoCheckBox extends StateNotifier<bool> {
   }
 }
 
-final verticalText = StateProvider((ref) => '重要度');
-final horizonalText = StateProvider((ref) => '緊急度');
+final verticalText = StateProvider((ref) => '重要');
+final horizonalText = StateProvider((ref) => '緊急');
+final denaialText = StateProvider((ref) => 'でない');
