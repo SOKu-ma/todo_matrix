@@ -14,12 +14,13 @@ class MyApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _color = ref.watch(appColorProvider);
     final _colorNotifier = ref.watch(appColorProvider.notifier);
+
     return MaterialApp(
-      title: '',
       theme: ThemeData(
         primarySwatch: _color,
       ),
-      home: HomeScreen(),
+      darkTheme: ThemeData.dark(),
+      home: const HomeScreen(),
     );
   }
 }
