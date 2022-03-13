@@ -11,7 +11,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _color = ref.watch(appColorProvider);
-    final _colorNotifier = ref.watch(appColorProvider.notifier);
+    // final _colorNotifier = ref.watch(appColorProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(),
@@ -23,6 +23,8 @@ class HomeScreen extends ConsumerWidget {
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 60),
         child: FloatingActionButton(
+          backgroundColor: _color,
+          foregroundColor: Colors.white,
           onPressed: () {
             showModalBottomSheet<void>(
               shape: const RoundedRectangleBorder(
@@ -31,7 +33,7 @@ class HomeScreen extends ConsumerWidget {
               barrierColor: Colors.black.withAlpha(1),
               backgroundColor: Colors.white,
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.95),
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
               isDismissible: true,
               isScrollControlled: true,
               context: context,

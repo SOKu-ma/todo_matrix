@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_matrix/common/common.dart';
 
-class DrawerScreen extends StatelessWidget {
+class DrawerScreen extends ConsumerWidget {
   const DrawerScreen({Key? key, required this.color}) : super(key: key);
   final Color color;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final _color = ref.watch(appColorProvider);
+    final _colorNotifier = ref.watch(appColorProvider.notifier);
+
     return Scaffold(
       body: SafeArea(
         child: ListView(
@@ -13,20 +18,46 @@ class DrawerScreen extends StatelessWidget {
             _drawerAccount(),
             const SizedBox(height: 40),
             Container(
-                margin: const EdgeInsets.only(left: 20, right: 10),
+                margin: const EdgeInsets.only(left: 15, right: 10),
                 child: const Text("基本設定")),
             _drawerRow(
-                "アプリカラー", const Icon(Icons.color_lens, color: Colors.green)),
+                "ダークモード",
+                const Icon(
+                  Icons.dark_mode,
+                  // color: Colors.green,
+                )),
+            _drawerRow(
+                "アプリカラー",
+                const Icon(
+                  Icons.color_lens,
+                  // color: Colors.green,
+                )),
             const SizedBox(height: 40),
             Container(
                 margin: const EdgeInsets.only(left: 20, right: 10),
                 child: const Text("その他")),
             _drawerRow(
-                "レビューする", const Icon(Icons.reviews, color: Colors.green)),
-            _drawerRow("開発者の他のアプリ",
-                const Icon(Icons.apps_rounded, color: Colors.green)),
-            _drawerRow("アプリのバージョン",
-                const Icon(Icons.phone_iphone_outlined, color: Colors.green)),
+              "アプリのレビューする",
+              const Icon(
+                Icons.reviews,
+                // color: Colors.green,
+              ),
+            ),
+            _drawerRow(
+                "開発者の他のアプリ",
+                const Icon(
+                  Icons.apps_rounded,
+                  // color: Colors.green,
+                )),
+            Container(
+              padding: const EdgeInsets.only(left: 10),
+              child: const ListTile(
+                leading: Icon(
+                  Icons.phone_iphone,
+                ),
+                title: Text("バージョン情報"),
+              ),
+            )
           ],
         ),
       ),
@@ -37,14 +68,18 @@ class DrawerScreen extends StatelessWidget {
   Widget _drawerAccount() {
     return GestureDetector(
       child: Container(
-        margin: const EdgeInsets.only(left: 10, right: 10),
         child: const ListTile(
           leading: Icon(
             Icons.account_circle,
-            color: Colors.green,
           ),
-          title: Text("ユーザー（ゲスト）"),
-          subtitle: Text("aaa@test.jp"),
+          title: Text(
+            "ユーザー（ゲスト）",
+            style: TextStyle(fontSize: 16),
+          ),
+          subtitle: Text(
+            "aaa@test.jp",
+            style: TextStyle(fontSize: 16),
+          ),
         ),
       ),
       onTap: () {},
@@ -54,25 +89,21 @@ class DrawerScreen extends StatelessWidget {
   // アカウント情報以外
   Widget _drawerRow(String title, Icon icon) {
     return Container(
-      // margin: const EdgeInsets.only(left: 30, right: 30),
-      // decoration: const BoxDecoration(
-      // border: Border(
-      // bottom: BorderSide(color: Colors.grey),
-      // ),
-      // ),
       padding: const EdgeInsets.only(
         left: 10,
         right: 10,
       ),
       child: ListTile(
         leading: icon,
-        title: Text(title),
+        title: Text(
+          title,
+          style: const TextStyle(fontSize: 16),
+        ),
         onTap: () {
           switch (title) {
             case "アプリカラー":
               // ColorPicker
               print("アプリカラー 押下");
-
               break;
             default:
           }

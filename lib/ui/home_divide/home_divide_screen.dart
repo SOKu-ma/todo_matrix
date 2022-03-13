@@ -55,8 +55,16 @@ class HomeDivide extends ConsumerWidget {
                           quarterTurns: 1,
                           child: RichText(
                             text: TextSpan(
-                              text: _horizonalText,
                               style: DefaultTextStyle.of(context).style,
+                              children: [
+                                TextSpan(
+                                  text: _horizonalText,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -72,8 +80,17 @@ class HomeDivide extends ConsumerWidget {
                           quarterTurns: 1,
                           child: RichText(
                             text: TextSpan(
-                              text: _horizonalText + _denaialText,
+                              // text: _horizonalText + _denaialText,
                               style: DefaultTextStyle.of(context).style,
+                              children: [
+                                TextSpan(
+                                  text: _horizonalText + _denaialText,
+                                  style: const TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.blue,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -98,9 +115,17 @@ class HomeDivide extends ConsumerWidget {
                                       MediaQuery.of(context).size.width * 0.15),
                               child: RichText(
                                 text: TextSpan(
-                                  text: _verticalText,
-                                  style: DefaultTextStyle.of(context).style,
-                                ),
+                                    // text: _verticalText,
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: _verticalText,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ]),
                               ),
                             ),
                           ),
@@ -113,9 +138,17 @@ class HomeDivide extends ConsumerWidget {
                                       MediaQuery.of(context).size.width * 0.15),
                               child: RichText(
                                 text: TextSpan(
-                                  text: _verticalText + _denaialText,
-                                  style: DefaultTextStyle.of(context).style,
-                                ),
+                                    // text: _verticalText + _denaialText,
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: [
+                                      TextSpan(
+                                        text: _verticalText + _denaialText,
+                                        style: const TextStyle(
+                                            fontSize: 14,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ]),
                               ),
                             ),
                           ),
@@ -133,7 +166,8 @@ class HomeDivide extends ConsumerWidget {
                                     MaterialPageRoute<void>(
                                       builder: (BuildContext context) =>
                                           TodoDetail(
-                                              Category.importantUrgent.name),
+                                              Category.importantUrgent.name,
+                                              _impUrgColor),
                                     ),
                                   );
                                 },
@@ -149,17 +183,16 @@ class HomeDivide extends ConsumerWidget {
                                             "Category.importantUrgent")
                                           Card(
                                             color: _impUrgColor[50],
+                                            // color: _impUrgColor[300],
                                             child: CheckboxListTile(
                                               dense: true,
                                               contentPadding:
                                                   const EdgeInsets.only(
                                                       left: 5),
                                               value: todo.isChecked,
-                                              title: Text(
-                                                todo.title,
-                                                style: const TextStyle(
-                                                    fontSize: 16),
-                                              ),
+                                              title: Text(todo.title,
+                                                  style: const TextStyle(
+                                                      fontSize: 16)),
                                               onChanged: (val) {},
                                             ),
                                           ),
@@ -186,8 +219,10 @@ class HomeDivide extends ConsumerWidget {
                                         Navigator.of(context).push(
                                           MaterialPageRoute<void>(
                                             builder: (BuildContext context) =>
-                                                TodoDetail(Category
-                                                    .importantUnUrgent.name),
+                                                TodoDetail(
+                                                    Category
+                                                        .importantUnUrgent.name,
+                                                    _impUnUrgColor),
                                           ),
                                         );
                                       },
@@ -203,6 +238,7 @@ class HomeDivide extends ConsumerWidget {
                                                   "Category.importantUnUrgent")
                                                 Card(
                                                   color: _impUnUrgColor[50],
+                                                  // color: _impUnUrgColor[300],
                                                   child: CheckboxListTile(
                                                     dense: true,
                                                     contentPadding:
@@ -251,8 +287,10 @@ class HomeDivide extends ConsumerWidget {
                                         Navigator.of(context).push(
                                           MaterialPageRoute<void>(
                                             builder: (BuildContext context) =>
-                                                TodoDetail(Category
-                                                    .unImportantUnUrgent.name),
+                                                TodoDetail(
+                                                    Category.unImportantUnUrgent
+                                                        .name,
+                                                    _unImpUrgColor),
                                           ),
                                         );
                                       },
@@ -268,6 +306,7 @@ class HomeDivide extends ConsumerWidget {
                                                   "Category.unImportantUrgent")
                                                 Card(
                                                   color: _unImpUrgColor[50],
+                                                  // color: _unImpUrgColor[300],
                                                   child: CheckboxListTile(
                                                     dense: true,
                                                     contentPadding:
@@ -305,8 +344,10 @@ class HomeDivide extends ConsumerWidget {
                                         Navigator.of(context).push(
                                           MaterialPageRoute<void>(
                                             builder: (BuildContext context) =>
-                                                TodoDetail(Category
-                                                    .unImportantUnUrgent.name),
+                                                TodoDetail(
+                                                    Category.unImportantUnUrgent
+                                                        .name,
+                                                    _unImpUnUrgColor),
                                           ),
                                         );
                                       },
@@ -321,6 +362,7 @@ class HomeDivide extends ConsumerWidget {
                                                   "Category.unImportantUnUrgent")
                                                 Card(
                                                   color: _unImpUnUrgColor[50],
+                                                  // color: _unImpUnUrgColor[300],
                                                   child: CheckboxListTile(
                                                     dense: true,
                                                     contentPadding:
@@ -353,14 +395,6 @@ class HomeDivide extends ConsumerWidget {
                 ),
                 const SizedBox(width: 5)
                 // -- 2列目 END --
-                //   ],
-                // ),
-                // Container(
-                //   height: 50,
-                //   width: MediaQuery.of(context).size.width,
-                //   child: const Text("バナー用"),
-                //   color: Colors.black87,
-                // ),
               ],
             ),
           ),
@@ -373,6 +407,22 @@ class HomeDivide extends ConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  // Todoリストのカード
+  _todoCard(MaterialColor color) {
+    return Card(
+      color: color[50],
+      // color: _impUrgColor[300],
+      child: CheckboxListTile(
+        dense: true,
+        contentPadding: const EdgeInsets.only(left: 5),
+        value: false,
+        // value: todo.isChecked,
+        // title: Text(todo.title, style: const TextStyle(fontSize: 16)),
+        onChanged: (val) {},
       ),
     );
   }
