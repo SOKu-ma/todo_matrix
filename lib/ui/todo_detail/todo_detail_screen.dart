@@ -27,23 +27,42 @@ class TodoDetail extends ConsumerWidget {
                 // color: selectColor[300],
                 color: selectColor[100],
                 margin: const EdgeInsets.all(10),
-                child: ListView(
+                // child: ReorderableListView.builder(
+                child: ReorderableListView(
+                  // itemCount: _todoModel.length,
+                  onReorder: ((oldIndex, newIndex) {
+                    _todoModelNotifier.replace(oldIndex, newIndex);
+                  }),
+                  // itemBuilder: (context, index) {return Dismissible(key: ValueKey<int>(_todoModel[index]), child: child)}
+
                   children: [
                     for (final todo in _todoModel)
                       if (todo.category.toString() ==
                           "Category." + selectCategory.toString())
-                        Card(
-                          // color: selectColor[200],
-                          color: selectColor[50],
-                          child: CheckboxListTile(
-                            dense: true,
-                            contentPadding: const EdgeInsets.only(left: 5),
-                            value: todo.isChecked,
-                            title: Text(
-                              todo.title,
-                              style: const TextStyle(fontSize: 16),
+                        Dismissible(
+                          key: UniqueKey(),
+                          // ↓どの行かをKey指定する
+                          // key: ValueKey<int>(todo[]),
+                          background: Container(
+                            color: Colors.red,
+                            child: const Icon(Icons.delete),
+                          ),
+                          onDismissed: (direction) {
+                            print("スワイプで削除したよ");
+                          },
+                          child: Card(
+                            // color: selectColor[200],
+                            color: selectColor[50],
+                            child: CheckboxListTile(
+                              dense: true,
+                              contentPadding: const EdgeInsets.only(left: 5),
+                              value: todo.isChecked,
+                              title: Text(
+                                todo.title,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                              onChanged: (val) {},
                             ),
-                            onChanged: (val) {},
                           ),
                         ),
                   ],

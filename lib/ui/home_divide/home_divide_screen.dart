@@ -403,7 +403,8 @@ class HomeDivide extends ConsumerWidget {
             flex: 1,
             child: Container(
               height: 50,
-              color: Colors.purple[100],
+              decoration: BoxDecoration(border: Border.all()),
+              // color: Colors.purple[100],
             ),
           ),
         ],
