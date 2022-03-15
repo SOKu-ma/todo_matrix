@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_matrix/model/TodoModel.dart';
-import 'package:todo_matrix/ui/home_divide/home_divide_view_model.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
 
 class TodoDetail extends ConsumerWidget {
@@ -23,74 +22,86 @@ class TodoDetail extends ConsumerWidget {
         child: Column(
           children: [
             Expanded(
+              flex: 9,
               child: Container(
                 // color: selectColor[300],
                 color: selectColor[100],
-                margin: const EdgeInsets.all(10),
-                // child: ReorderableListView.builder(
-                child: ReorderableListView(
-                  // itemCount: _todoModel.length,
+                padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.all(5),
+                child: ReorderableListView.builder(
+                  itemCount: _todoModel.length,
                   onReorder: ((oldIndex, newIndex) {
                     _todoModelNotifier.replace(oldIndex, newIndex);
                   }),
-                  // itemBuilder: (context, index) {return Dismissible(key: ValueKey<int>(_todoModel[index]), child: child)}
-
-                  children: [
-                    for (final todo in _todoModel)
-                      if (todo.category.toString() ==
-                          "Category." + selectCategory.toString())
-                        Dismissible(
-                          key: UniqueKey(),
-                          // ↓どの行かをKey指定する
-                          // key: ValueKey<int>(todo[]),
-                          background: Container(
-                            color: Colors.red,
-                            child: const Icon(Icons.delete),
+                  itemBuilder: (context, index) {
+                    return Dismissible(
+                      key: ValueKey(_todoModel[index]),
+                      background: Container(
+                        color: Colors.red,
+                        child: const Icon(Icons.delete),
+                      ),
+                      onDismissed: (direction) {
+                        _todoModelNotifier.delete(index);
+                      },
+                      child: Card(
+                        // color: selectColor[200],
+                        color: selectColor[50],
+                        child: ListTile(
+                          onTap: () {},
+                          dense: true,
+                          contentPadding: const EdgeInsets.only(left: 5),
+                          trailing: Checkbox(
+                            onChanged: (val) {
+                              print("onChanged");
+                            },
+                            value: _todoModel[index].isChecked,
                           ),
-                          onDismissed: (direction) {
-                            print("スワイプで削除したよ");
-                          },
-                          child: Card(
-                            // color: selectColor[200],
-                            color: selectColor[50],
-                            child: CheckboxListTile(
-                              dense: true,
-                              contentPadding: const EdgeInsets.only(left: 5),
-                              value: todo.isChecked,
-                              title: Text(
-                                todo.title,
-                                style: const TextStyle(fontSize: 16),
-                              ),
-                              onChanged: (val) {},
-                            ),
+                          title: Text(
+                            _todoModel[index].title,
+                            style: const TextStyle(fontSize: 16),
                           ),
                         ),
-                  ],
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
+            Expanded(
+              child: SizedBox(
+                height: 50,
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(border: Border.all()),
+                ),
+              ),
+              flex: 1,
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet<void>(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            ),
-            barrierColor: Colors.black.withAlpha(1),
-            backgroundColor: Colors.white,
-            constraints: BoxConstraints(
-                maxHeight: MediaQuery.of(context).size.height * 0.95),
-            isDismissible: true,
-            isScrollControlled: true,
-            context: context,
-            builder: (BuildContext context) {
-              return TodoMake();
-            },
-          );
-        },
-        child: const Icon(Icons.add),
+      floatingActionButton: Container(
+        margin: const EdgeInsets.only(bottom: 60),
+        child: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet<void>(
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              barrierColor: Colors.black.withAlpha(1),
+              backgroundColor: Colors.white,
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.95),
+              isDismissible: true,
+              isScrollControlled: true,
+              context: context,
+              builder: (BuildContext context) {
+                return TodoMake();
+              },
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
       ),
     );
   }

@@ -33,7 +33,8 @@ class TodoMake extends ConsumerWidget {
           margin:
               const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
           child: TextFormField(
-            decoration: const InputDecoration(hintText: "タスクを追加"),
+            autofocus: true,
+            decoration: const InputDecoration(hintText: "新しいタスク"),
             controller: _todoTitle,
             key: _formKey,
             validator: (value) {
@@ -44,13 +45,13 @@ class TodoMake extends ConsumerWidget {
               return null;
             },
             onChanged: (value) {
-              print("onChangeイベント：" + value);
+              print("onChangeイベント:" + value);
             },
             onSaved: (value) {
-              print("onSaveイベント：" + value!);
+              print("onSaveイベント:" + value!);
             },
             onFieldSubmitted: (value) {
-              print("onFieldSubmittedイベント：" + value);
+              print("onFieldSubmittedイベント:" + value);
             },
           ),
         ),
@@ -58,7 +59,8 @@ class TodoMake extends ConsumerWidget {
         Container(
           width: double.infinity,
           margin: const EdgeInsets.only(left: 25),
-          child: const Text("カテゴリを選択", style: TextStyle(fontSize: 18)),
+          // child: const Text("カテゴリを選択", style: TextStyle(fontSize: 18)),
+          // child: const Text("重要度・緊急度", style: TextStyle(fontSize: 16)),
         ),
 
         // ----------------------------------------------
@@ -96,22 +98,47 @@ class TodoMake extends ConsumerWidget {
         // ----------------------------------------------
         // Container(
         //   margin: const EdgeInsets.only(left: 20, right: 20),
-        //   child: Row(
+        //   child: Column(
         //     children: [
-        //       Expanded(
-        //         child: Container(
-        //           child: ToggleButtons(children: []),
-        //         ),
+        //       Row(
+        //         children: [
+        //           Expanded(
+        //             child: Container(
+        //               child: CheckboxListTile(
+        //                 onChanged: (val) {},
+        //                 value: false,
+        //                 controlAffinity: ListTileControlAffinity.leading,
+        //                 title: const Text("重要"),
+        //                 contentPadding: const EdgeInsets.only(left: 10),
+        //               ),
+        //             ),
+        //           ),
+        //           Expanded(
+        //             child: RadioListTile(
+        //               title: const Text("緊急"),
+        //               value: Category.importantUnUrgent,
+        //               groupValue: _selected,
+        //               onChanged: (val) {
+        //                 _selectedNotifier.select(val);
+        //               },
+        //               contentPadding: const EdgeInsets.only(left: 10),
+        //             ),
+        //           ),
+        //         ],
         //       ),
-        //       Expanded(
-        //         child: RadioListTile(
-        //           title: const Text("重要でない"),
-        //           value: Category.importantUnUrgent,
-        //           groupValue: _selected,
-        //           onChanged: (val) {
-        //             _selectedNotifier.select(val);
-        //           },
-        //         ),
+        //       Row(
+        //         children: [
+        //           Expanded(
+        //             child: ListTile(
+        //               leading: const Icon(Icons.timer),
+        //               title: const Text("通知設定"),
+        //               onTap: () {},
+        //             ),
+        //           ),
+        //           const Expanded(
+        //             child: SizedBox(),
+        //           ),
+        //         ],
         //       ),
         //     ],
         //   ),
@@ -121,7 +148,7 @@ class TodoMake extends ConsumerWidget {
         // ----------------------------------------------
         RadioListTile(
           title: const Text(
-            "第１領域 : 緊急かつ重要なタスク",
+            "第１領域 : 緊急かつ重要",
             style: TextStyle(fontSize: 15),
           ),
           value: Category.importantUrgent,
@@ -132,7 +159,7 @@ class TodoMake extends ConsumerWidget {
         ),
         RadioListTile(
           title: const Text(
-            "第２領域 : 重要だが緊急でないなタスク",
+            "第２領域 : 緊急でないが重要",
             style: TextStyle(fontSize: 15),
           ),
           value: Category.importantUnUrgent,
@@ -143,7 +170,7 @@ class TodoMake extends ConsumerWidget {
         ),
         RadioListTile(
           title: const Text(
-            "第３領域 : 緊急だが重要でないタスク",
+            "第３領域 : 緊急だが重要でない",
             style: TextStyle(fontSize: 15),
           ),
           value: Category.unImportantUrgent,
@@ -154,7 +181,7 @@ class TodoMake extends ConsumerWidget {
         ),
         RadioListTile(
           title: const Text(
-            "第４領域 : 緊急でなく重要でないタスク",
+            "第４領域 : 緊急でも重要でもないタスク",
             style: TextStyle(fontSize: 15),
           ),
           value: Category.unImportantUnUrgent,
