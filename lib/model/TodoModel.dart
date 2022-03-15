@@ -26,7 +26,10 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
   }
 
   // Todo削除メソッド
-  void delete(TodoModel todo) {}
+  void delete(int index) {
+    state.removeAt(index);
+    state = [for (final todo in state) todo];
+  }
 
   // Todoカテゴリー変更メソッド
   void selectCategory(TodoModel todo) {
