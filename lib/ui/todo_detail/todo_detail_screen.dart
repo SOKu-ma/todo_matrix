@@ -26,12 +26,12 @@ class TodoDetail extends ConsumerWidget {
               child: Container(
                 // color: selectColor[300],
                 color: selectColor[100],
-                padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.all(5),
+                padding: const EdgeInsets.all(10),
+                // margin: const EdgeInsets.all(5),
                 child: ReorderableListView.builder(
                   itemCount: _todoModel.length,
                   onReorder: ((oldIndex, newIndex) {
-                    _todoModelNotifier.replace(oldIndex, newIndex);
+                    _todoModelNotifier.replaceTodo(oldIndex, newIndex);
                   }),
                   itemBuilder: (context, index) {
                     return Dismissible(
@@ -41,18 +41,38 @@ class TodoDetail extends ConsumerWidget {
                         child: const Icon(Icons.delete),
                       ),
                       onDismissed: (direction) {
-                        _todoModelNotifier.delete(index);
+                        _todoModelNotifier.deleteTodo(index);
                       },
                       child: Card(
                         // color: selectColor[200],
                         color: selectColor[50],
                         child: ListTile(
-                          onTap: () {},
+                          onTap: () {
+                            print("Card onTap");
+                            showModalBottomSheet<void>(
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(16)),
+                              ),
+                              barrierColor: Colors.black.withAlpha(1),
+                              // backgroundColor: Colors.transparent,
+                              constraints: BoxConstraints(
+                                  maxHeight:
+                                      MediaQuery.of(context).size.height *
+                                          0.95),
+                              isDismissible: true,
+                              isScrollControlled: true,
+                              context: context,
+                              builder: (BuildContext context) {
+                                return TodoMake();
+                              },
+                            );
+                          },
                           dense: true,
                           contentPadding: const EdgeInsets.only(left: 5),
                           trailing: Checkbox(
                             onChanged: (val) {
-                              print("onChanged");
+                              print("Checkbox onChanged");
                             },
                             value: _todoModel[index].isChecked,
                           ),
@@ -60,6 +80,7 @@ class TodoDetail extends ConsumerWidget {
                             _todoModel[index].title,
                             style: const TextStyle(fontSize: 16),
                           ),
+                          subtitle: Text("本日 18:00"),
                         ),
                       ),
                     );
@@ -89,7 +110,6 @@ class TodoDetail extends ConsumerWidget {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
               barrierColor: Colors.black.withAlpha(1),
-              backgroundColor: Colors.white,
               constraints: BoxConstraints(
                   maxHeight: MediaQuery.of(context).size.height * 0.95),
               isDismissible: true,

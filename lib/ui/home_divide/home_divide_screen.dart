@@ -61,7 +61,6 @@ class HomeDivide extends ConsumerWidget {
                                   text: _horizonalText,
                                   style: const TextStyle(
                                       fontSize: 14,
-                                      color: Colors.red,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -87,7 +86,6 @@ class HomeDivide extends ConsumerWidget {
                                   text: _horizonalText + _denaialText,
                                   style: const TextStyle(
                                       fontSize: 14,
-                                      color: Colors.blue,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ],
@@ -122,7 +120,6 @@ class HomeDivide extends ConsumerWidget {
                                         text: _verticalText,
                                         style: const TextStyle(
                                             fontSize: 14,
-                                            color: Colors.red,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ]),
@@ -145,7 +142,6 @@ class HomeDivide extends ConsumerWidget {
                                         text: _verticalText + _denaialText,
                                         style: const TextStyle(
                                             fontSize: 14,
-                                            color: Colors.blue,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ]),
@@ -441,7 +437,6 @@ class HomeDivide extends ConsumerWidget {
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
           ),
           barrierColor: Colors.black.withAlpha(1),
-          backgroundColor: Colors.white,
           constraints: BoxConstraints(
               maxHeight: MediaQuery.of(context).size.height * 0.95),
           isDismissible: true,
