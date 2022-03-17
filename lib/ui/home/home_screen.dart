@@ -31,9 +31,8 @@ class HomeScreen extends ConsumerWidget {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
               ),
               barrierColor: Colors.black.withAlpha(1),
-              backgroundColor: Colors.white,
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+                  maxHeight: MediaQuery.of(context).size.height * 0.95),
               isDismissible: true,
               isScrollControlled: true,
               context: context,

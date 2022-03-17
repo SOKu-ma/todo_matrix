@@ -10,13 +10,13 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
   TodoModelNotifier(List<TodoModel> state) : super(state);
 
   // Todo追加メソッド
-  void add(TodoModel todo) {
+  void addTodo(TodoModel todo) {
     // ドット3つでStateにtodoをappendしてくれる
     state = [...state, todo];
   }
 
   // Todo並べ替えメソッド
-  void replace(int oldIndex, int newIndex) {
+  void replaceTodo(int oldIndex, int newIndex) {
     if (oldIndex < newIndex) {
       newIndex -= 1;
     }
@@ -26,38 +26,40 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
   }
 
   // Todo削除メソッド
-  void delete(int index) {
+  void deleteTodo(int index) {
     state.removeAt(index);
     state = [for (final todo in state) todo];
   }
 
-  // Todoカテゴリー変更メソッド
-  void selectCategory(TodoModel todo) {
-    //
-  }
+  // // Todoカテゴリー変更メソッド
+  // void selectCategory(TodoModel todo) {
+  //   //
+  // }
 
-  // Todoのチェック切替メソッド
-  void cheak(TodoModel todo) {
-    //
-  }
+  // // Todoのチェック切替メソッド
+  // void cheak(TodoModel todo) {
+  //   //
+  // }
 
-  void countCategory(TodoModel tpdo) {
-    //
-  }
+  // void countCategory(TodoModel tpdo) {
+  //   //
+  // }
 }
 
 // Todoモデル
 class TodoModel {
   // int id;
   String title;
-  // String subTitle;
+  String subTitle;
+  String? limitDate;
   bool isChecked;
   var category;
 
   TodoModel(
     // this.id,
     this.title,
-    // this.subTitle,
+    this.subTitle,
+    this.limitDate,
     this.isChecked,
     this.category,
   );
