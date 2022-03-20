@@ -27,7 +27,7 @@ class DrawerScreen extends ConsumerWidget {
                   // color: Colors.green,
                 )),
             _drawerRow(
-                "アプリカラー",
+                "アプリのテーマカラー",
                 const Icon(
                   Icons.color_lens,
                   // color: Colors.green,
@@ -66,23 +66,19 @@ class DrawerScreen extends ConsumerWidget {
 
   // アカウント情報
   Widget _drawerAccount() {
-    return GestureDetector(
-      child: Container(
-        child: const ListTile(
-          leading: Icon(
-            Icons.account_circle,
-          ),
-          title: Text(
-            "ユーザー（ゲスト）",
-            style: TextStyle(fontSize: 16),
-          ),
-          subtitle: Text(
-            "aaa@test.jp",
-            style: TextStyle(fontSize: 16),
-          ),
-        ),
-      ),
+    return ListTile(
       onTap: () {},
+      leading: const Icon(
+        Icons.account_circle,
+      ),
+      title: Text(
+        "ユーザー（ゲスト）",
+        style: TextStyle(fontSize: 16),
+      ),
+      subtitle: Text(
+        "aaa@test.jp",
+        style: TextStyle(fontSize: 16),
+      ),
     );
   }
 

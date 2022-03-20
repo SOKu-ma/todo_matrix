@@ -4,6 +4,7 @@ import 'package:todo_matrix/common/common.dart';
 import 'package:todo_matrix/ui/drawer/drawer_screen.dart';
 import 'package:todo_matrix/ui/home_divide/home_divide_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
+import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,7 +12,14 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _color = ref.watch(appColorProvider);
-    // final _colorNotifier = ref.watch(appColorProvider.notifier);
+    final _colorNotifier = ref.watch(appColorProvider.notifier);
+
+    final _todoTitle = ref.watch(todoTitleProvider);
+    final _todoTitleNotifier = ref.watch(todoTitleProvider.notifier);
+
+    final _selectShowMenuCategory = ref.watch(selectCategoryProvider);
+    final _selectShowMenuCategoryNotifier =
+        ref.watch(selectCategoryProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(),
@@ -21,7 +29,7 @@ class HomeScreen extends ConsumerWidget {
       )),
       body: const SafeArea(child: HomeDivide()),
       floatingActionButton: Container(
-        margin: const EdgeInsets.only(bottom: 60),
+        margin: const EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(
           backgroundColor: _color,
           foregroundColor: Colors.white,
@@ -32,14 +40,19 @@ class HomeScreen extends ConsumerWidget {
               ),
               barrierColor: Colors.black.withAlpha(1),
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.95),
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
               isDismissible: true,
               isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
-                return TodoMake();
+                return TodoMake("", "", "");
               },
-            );
+            ).then((value) {
+              print("showDialog Close");
+              _todoTitle.text = "";
+              _selectShowMenuCategoryNotifier
+                  .clear(_selectShowMenuCategory.toString());
+            });
           },
           child: const Icon(Icons.add),
         ),
