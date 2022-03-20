@@ -6,6 +6,7 @@ import 'package:todo_matrix/ui/home_divide/home_divide_view_model.dart';
 import 'package:todo_matrix/ui/home_grid/home_grid_view_model.dart';
 import 'package:todo_matrix/ui/todo_detail/todo_detail_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
+import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 enum Category {
   importantUrgent, // 第1領域 緊急かつ重要
@@ -162,8 +163,7 @@ class HomeDivide extends ConsumerWidget {
                                     MaterialPageRoute<void>(
                                       builder: (BuildContext context) =>
                                           TodoDetail(
-                                              Category.importantUrgent.name,
-                                              _impUrgColor),
+                                              ImportantUrgent, _impUrgColor),
                                     ),
                                   );
                                 },
@@ -173,10 +173,9 @@ class HomeDivide extends ConsumerWidget {
                                     children: [
                                       // Todo0件の場合
                                       for (final todo in _todoModel)
-                                        // 重要だが緊急でないタスク
+                                        // 重要かつ緊急なタスク
                                         // TODO 分岐方法を検討
-                                        if ((todo.category).toString() ==
-                                            "Category.importantUrgent")
+                                        if (todo.category == ImportantUrgent)
                                           Card(
                                             color: _impUrgColor[50],
                                             // color: _impUrgColor[300],
@@ -192,8 +191,8 @@ class HomeDivide extends ConsumerWidget {
                                               onChanged: (val) {},
                                             ),
                                           ),
-                                      _emptyTodo(
-                                          context, Category.importantUrgent),
+                                      // _emptyTodo(
+                                      //     context, Category.importantUrgent),
                                       const ListTile(
                                         leading: Text(""),
                                       ),
@@ -215,9 +214,7 @@ class HomeDivide extends ConsumerWidget {
                                         Navigator.of(context).push(
                                           MaterialPageRoute<void>(
                                             builder: (BuildContext context) =>
-                                                TodoDetail(
-                                                    Category
-                                                        .importantUnUrgent.name,
+                                                TodoDetail(ImportantUnUrgent,
                                                     _impUnUrgColor),
                                           ),
                                         );
@@ -230,8 +227,8 @@ class HomeDivide extends ConsumerWidget {
                                             for (final todo in _todoModel)
                                               // 重要だが緊急でないタスク
                                               // TODO 分岐方法を検討
-                                              if ((todo.category).toString() ==
-                                                  "Category.importantUnUrgent")
+                                              if (todo.category ==
+                                                  ImportantUnUrgent)
                                                 Card(
                                                   color: _impUnUrgColor[50],
                                                   // color: _impUnUrgColor[300],
@@ -249,8 +246,8 @@ class HomeDivide extends ConsumerWidget {
                                                     onChanged: (val) {},
                                                   ),
                                                 ),
-                                            _emptyTodo(context,
-                                                Category.importantUnUrgent),
+                                            // _emptyTodo(context,
+                                            //     Category.importantUnUrgent),
                                             const ListTile(
                                               leading: Text(""),
                                             ),
@@ -283,9 +280,7 @@ class HomeDivide extends ConsumerWidget {
                                         Navigator.of(context).push(
                                           MaterialPageRoute<void>(
                                             builder: (BuildContext context) =>
-                                                TodoDetail(
-                                                    Category.unImportantUnUrgent
-                                                        .name,
+                                                TodoDetail(UnImportantUrgent,
                                                     _unImpUrgColor),
                                           ),
                                         );
@@ -296,10 +291,10 @@ class HomeDivide extends ConsumerWidget {
                                           children: [
                                             // Todo0件の場合
                                             for (final todo in _todoModel)
-                                              // 重要だが緊急でないタスク
+                                              // 重要でないが緊急なタスク
                                               // TODO 分岐方法を検討
-                                              if ((todo.category).toString() ==
-                                                  "Category.unImportantUrgent")
+                                              if (todo.category ==
+                                                  UnImportantUrgent)
                                                 Card(
                                                   color: _unImpUrgColor[50],
                                                   // color: _unImpUrgColor[300],
@@ -317,8 +312,8 @@ class HomeDivide extends ConsumerWidget {
                                                     onChanged: (val) {},
                                                   ),
                                                 ),
-                                            _emptyTodo(context,
-                                                Category.unImportantUrgent),
+                                            // _emptyTodo(context,
+                                            //     Category.unImportantUrgent),
                                           ],
                                         ),
                                       ),
@@ -340,9 +335,7 @@ class HomeDivide extends ConsumerWidget {
                                         Navigator.of(context).push(
                                           MaterialPageRoute<void>(
                                             builder: (BuildContext context) =>
-                                                TodoDetail(
-                                                    Category.unImportantUnUrgent
-                                                        .name,
+                                                TodoDetail(UnImportantUnUrgent,
                                                     _unImpUnUrgColor),
                                           ),
                                         );
@@ -352,10 +345,10 @@ class HomeDivide extends ConsumerWidget {
                                         child: ListView(
                                           children: [
                                             for (final todo in _todoModel)
-                                              // 重要だが緊急でないタスク
+                                              // 重要でも緊急でもないタスク
                                               // TODO 分岐方法を検討
-                                              if ((todo.category).toString() ==
-                                                  "Category.unImportantUnUrgent")
+                                              if (todo.category ==
+                                                  UnImportantUnUrgent)
                                                 Card(
                                                   color: _unImpUnUrgColor[50],
                                                   // color: _unImpUnUrgColor[300],
@@ -373,8 +366,8 @@ class HomeDivide extends ConsumerWidget {
                                                     onChanged: (val) {},
                                                   ),
                                                 ),
-                                            _emptyTodo(context,
-                                                Category.unImportantUnUrgent),
+                                            // _emptyTodo(context,
+                                            //     Category.unImportantUnUrgent),
                                           ],
                                         ),
                                       ),
@@ -424,31 +417,31 @@ class HomeDivide extends ConsumerWidget {
     );
   }
 
-  // TODO 後で消す？？？
-  _emptyTodo(BuildContext context, Category category) {
-    return ListTile(
-      title: const Text("＋ タスクを追加", style: TextStyle(fontSize: 16)),
-      // leading: const Icon(Icons.add, size: 20),
-      dense: true,
-      contentPadding: const EdgeInsets.only(left: 5),
-      onTap: () async {
-        await showModalBottomSheet<void>(
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          ),
-          barrierColor: Colors.black.withAlpha(1),
-          constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.95),
-          isDismissible: true,
-          isScrollControlled: true,
-          context: context,
-          builder: (BuildContext context) {
-            return TodoMake();
-          },
-        );
-      },
-    );
-  }
+  // // TODO 後で消す？？？
+  // _emptyTodo(BuildContext context, Category category) {
+  //   return ListTile(
+  //     title: const Text("＋ タスクを追加", style: TextStyle(fontSize: 16)),
+  //     // leading: const Icon(Icons.add, size: 20),
+  //     dense: true,
+  //     contentPadding: const EdgeInsets.only(left: 5),
+  //     onTap: () async {
+  //       await showModalBottomSheet<void>(
+  //         shape: const RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+  //         ),
+  //         barrierColor: Colors.black.withAlpha(1),
+  //         constraints: BoxConstraints(
+  //             maxHeight: MediaQuery.of(context).size.height * 0.9),
+  //         isDismissible: true,
+  //         isScrollControlled: true,
+  //         context: context,
+  //         builder: (BuildContext context) {
+  //           return TodoMake();
+  //         },
+  //       );
+  //     },
+  //   );
+  // }
 
   // TODO 詳細画面へ遷移するようのリストも追加する？？？
   // ListViewがいっぱいになると遷移できなくなる可能性がある
