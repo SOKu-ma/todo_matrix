@@ -37,8 +37,12 @@ class SelectCategoryNotifier extends StateNotifier<String> {
     }
   }
 
+  void edit(String category) {
+    state = category;
+  }
+
   // 選択カテゴリーをクリア
-  clear(String category) {
+  void clear() {
     state = defImpUrgText;
   }
 }
@@ -97,6 +101,10 @@ class TodoTitleTextNotifier extends StateNotifier<String> {
   void editTitle(String text) {
     state = text;
   }
+
+  void clear() {
+    state = "";
+  }
 }
 
 // Todoタイトル用Provider（TextEditingController）
@@ -110,8 +118,13 @@ class TodoTitleNotifier extends StateNotifier<TextEditingController> {
   TodoTitleNotifier(TextEditingController state) : super(state);
 
   // テキストを編集
-  editTitle(String text) {
-    state.text = text;
+  editTitle(String value) {
+    state.text = value;
+  }
+
+  // テキストクリア
+  void clear() {
+    state.text = "";
   }
 
   // ブランクチェック
@@ -123,10 +136,50 @@ class TodoTitleNotifier extends StateNotifier<TextEditingController> {
   }
 }
 
-const NotifiDate = "通知なし";
+const NotifiDefDate = "通知なし";
+const OnTheDay = "本日";
+const Tommorow = "明日";
+
+// 通知設定用
 final notificationDate = StateNotifierProvider<NoticicationDate, String>(
-    (ref) => NoticicationDate(NotifiDate));
+    (ref) => NoticicationDate(NotifiDefDate));
 
 class NoticicationDate extends StateNotifier<String> {
   NoticicationDate(String state) : super(state);
+
+  // 時・分を取得
+  void edit(DateTime dateTime) {
+    final _checkDayAndYear = checkDayAndYear(dateTime);
+
+    state = _checkDayAndYear +
+        ' ' +
+        dateTime.hour.toString().padLeft(2, '0') +
+        ':' +
+        dateTime.minute.toString().padLeft(2, '0');
+  }
+
+  // 通知ラベルから時・分を取得
+  void editStringDate(String dateTime) {
+    state = dateTime;
+  }
+
+  // テキストをクリア
+  void clear() {
+    state = NotifiDefDate;
+  }
+
+  // 日付・年を判定
+  checkDayAndYear(DateTime dateTime) {
+    if (dateTime.year > DateTime.now().year) {
+      return "";
+    } else if (dateTime.day == DateTime.now().day) {
+      // 当日
+      return OnTheDay;
+    } else if (dateTime.day == DateTime.now().day + 1) {
+      // 明日
+      return Tommorow;
+    } else {
+      return dateTime.month.toString() + '/' + dateTime.day.toString();
+    }
+  }
 }

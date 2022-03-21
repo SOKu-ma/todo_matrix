@@ -49,6 +49,13 @@ class DrawerScreen extends ConsumerWidget {
                   Icons.apps_rounded,
                   // color: Colors.green,
                 )),
+            _drawerRow(
+              "利用規約",
+              const Icon(
+                Icons.apps_rounded,
+                // color: Colors.green,
+              ),
+            ),
             Container(
               padding: const EdgeInsets.only(left: 10),
               child: const ListTile(

@@ -1,7 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_matrix/common/common.dart';
 import 'package:todo_matrix/model/TodoModel.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
@@ -9,10 +9,11 @@ final _formKey = GlobalKey<FormState>();
 
 class TodoMake extends ConsumerWidget {
   final index;
-  final title;
   final selectCategory;
+  final notificateionDate;
 
-  const TodoMake(this.index, this.selectCategory, this.title, {Key? key})
+  const TodoMake(this.index, this.selectCategory, this.notificateionDate,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -25,6 +26,9 @@ class TodoMake extends ConsumerWidget {
 
     final _todoTitle = ref.watch(todoTitleProvider);
     final _todoTitleNotifier = ref.watch(todoTitleProvider.notifier);
+
+    final _todoTitleText = ref.watch(todoTitleTextNotifier);
+    final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
 
     final _selectCategory = ref.watch(selectCategoryProvider);
     final _selectCategoryNotifier = ref.watch(selectCategoryProvider.notifier);
@@ -41,7 +45,6 @@ class TodoMake extends ConsumerWidget {
           child: TextFormField(
             autofocus: true,
             decoration: const InputDecoration(hintText: "新しいタスク"),
-            // controller: _todoTitleNotifier.editTitle(title),
             controller: _todoTitle,
             key: _formKey,
             validator: (value) {
@@ -53,239 +56,35 @@ class TodoMake extends ConsumerWidget {
             },
             onChanged: (value) {
               print("onChangeイベント:" + value);
+              // _selectCategoryNotifier.edit(selectCategory);
+              // _notificationDateNotifier.editStringDate(notificateionDate);
             },
             onSaved: (value) {
               print("onSaveイベント:" + value!);
             },
             onFieldSubmitted: (value) {
               print("onFieldSubmittedイベント:" + value);
+              // _todoTitleNotifier.editTitle(value);
+              // _selectCategoryNotifier.edit(selectCategory);
+              // _notificationDateNotifier.editStringDate(notificateionDate);
             },
           ),
         ),
         Container(
           width: double.infinity,
           margin: const EdgeInsets.only(left: 25),
-          // child: const Text("カテゴリを選択", style: TextStyle(fontSize: 18)),
-          // child: const Text("重要度・緊急度", style: TextStyle(fontSize: 16)),
         ),
 
-        // ----------------------------------------------
-        // Container(
-        //   margin: const EdgeInsets.only(left: 20, right: 20),
-        //   child: Row(
-        //     children: [
-        //       Expanded(
-        //         child: Container(
-        //           child: RadioListTile(
-        //             title: const Text("重要"),
-        //             value: Category.importantUrgent,
-        //             groupValue: _selected,
-        //             onChanged: (val) {
-        //               _selectedNotifier.select(val);
-        //             },
-        //           ),
-        //         ),
-        //       ),
-        //       Expanded(
-        //         child: RadioListTile(
-        //           title: const Text("重要でない"),
-        //           value: Category.importantUnUrgent,
-        //           groupValue: _selected,
-        //           onChanged: (val) {
-        //             _selectedNotifier.select(val);
-        //           },
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // ----------------------------------------------
-
-        // ----------------------------------------------
-        // Container(
-        //   margin: const EdgeInsets.only(left: 20, right: 20),
-        //   child: Column(
-        //     children: [
-        //       Container(
-        //         child: CheckboxListTile(
-        //           onChanged: (val) {},
-        //           value: false,
-        //           // controlAffinity: ListTileControlAffinity.leading,
-        //           title: const Text("重要"),
-        //           contentPadding: const EdgeInsets.only(left: 10),
-        //         ),
-        //       ),
-        //       CheckboxListTile(
-        //         title: const Text("緊急"),
-        //         value: false,
-        //         // controlAffinity: ListTileControlAffinity.leading,
-        //         // value: Category.importantUnUrgent,
-        //         // groupValue: _selected,
-        //         onChanged: (val) {
-        //           _selectedNotifier.select(val);
-        //         },
-        //         contentPadding: const EdgeInsets.only(left: 10),
-        //       ),
-        //       ListTile(
-        //         leading: const Icon(Icons.timer),
-        //         title: const Text("通知設定"),
-        //         onTap: () {},
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // ----------------------------------------------
-
-        // ----------------------------------------------
-        // Container(
-        //   margin: const EdgeInsets.only(left: 20, right: 20),
-        //   child: Column(
-        //     children: [
-        //       Row(
-        //         children: [
-        //           Expanded(
-        //             child: Container(
-        //               child: CheckboxListTile(
-        //                 onChanged: (val) {},
-        //                 value: false,
-        //                 controlAffinity: ListTileControlAffinity.leading,
-        //                 title: const Text("重要"),
-        //                 contentPadding: const EdgeInsets.only(left: 10),
-        //               ),
-        //             ),
-        //           ),
-        //           Expanded(
-        //             child: CheckboxListTile(
-        //               title: const Text("緊急"),
-        //               value: false,
-        //               controlAffinity: ListTileControlAffinity.leading,
-        //               // value: Category.importantUnUrgent,
-        //               // groupValue: _selected,
-        //               onChanged: (val) {
-        //                 _selectedNotifier.select(val);
-        //               },
-        //               contentPadding: const EdgeInsets.only(left: 10),
-        //             ),
-        //           ),
-        //         ],
-        //       ),
-        //       Row(
-        //         children: [
-        //           Expanded(
-        //             child: ListTile(
-        //               leading: const Icon(Icons.timer),
-        //               title: const Text("通知設定"),
-        //               onTap: () {
-        //                 pickTime(context);
-        //               },
-        //             ),
-        //           ),
-        //           const Expanded(
-        //             child: SizedBox(),
-        //           ),
-        //         ],
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // ----------------------------------------------
-
-        // RadioButtonで選択（第1〜第4）
-        // ----------------------------------------------
-        // Container(
-        //   width: MediaQuery.of(context).size.width,
-        //   margin: const EdgeInsets.only(left: 10, right: 10, top: 20),
-        //   padding: const EdgeInsets.only(left: 10),
-        //   // child: const Text("タスクのカテゴリ選択", style: TextStyle(fontSize: 16)),
-        //   child: Icon(Icons.category_sharp),
-        // ),
-
-        // const ListTile(
-        //   contentPadding: EdgeInsets.only(left: 20),
-        //   leading: Icon(Icons.category),
-        //   title: Text("タスクのカテゴリ選択", style: TextStyle(fontSize: 16)),
-        // ),
-        // RadioListTile(
-        //   contentPadding: const EdgeInsets.only(left: 20),
-        //   title: const Text(
-        //     "第１領域 : 緊急かつ重要",
-        //     style: TextStyle(fontSize: 12),
-        //   ),
-        //   value: Category.importantUrgent,
-        //   groupValue: _selected,
-        //   onChanged: (val) {
-        //     _selectedNotifier.select(val);
-        //   },
-        // ),
-        // RadioListTile(
-        //   contentPadding: const EdgeInsets.only(left: 20),
-        //   title: const Text(
-        //     "第２領域 : 緊急でないが重要",
-        //     style: TextStyle(fontSize: 12),
-        //   ),
-        //   value: Category.importantUnUrgent,
-        //   groupValue: _selected,
-        //   onChanged: (val) {
-        //     _selectedNotifier.select(val);
-        //   },
-        // ),
-        // RadioListTile(
-        //   contentPadding: const EdgeInsets.only(left: 20),
-        //   title: const Text(
-        //     "第３領域 : 緊急だが重要でない",
-        //     style: TextStyle(fontSize: 12),
-        //   ),
-        //   value: Category.unImportantUrgent,
-        //   groupValue: _selected,
-        //   onChanged: (val) {
-        //     _selectedNotifier.select(val);
-        //   },
-        // ),
-        // RadioListTile(
-        //   contentPadding: const EdgeInsets.only(left: 20),
-        //   title: const Text(
-        //     "第４領域 : 緊急でも重要でもない",
-        //     style: TextStyle(fontSize: 12),
-        //   ),
-        //   value: Category.unImportantUnUrgent,
-        //   groupValue: _selected,
-        //   onChanged: (val) {
-        //     _selectedNotifier.select(val);
-        //   },
-        // ),
-        // ListTile(
-        //   contentPadding: const EdgeInsets.only(left: 25),
-        //   leading: const Icon(Icons.timer),
-        //   title: const Text("通知設定"),
-        //   onTap: () {
-        //     pickTime(context);
-        //   },
-        // ),
-        // Row(
-        //   children: [
-        //     Expanded(
-        //       child: ListTile(
-        //         contentPadding: const EdgeInsets.only(left: 25),
-        //         leading: const Icon(Icons.timer),
-        //         title: const Text("通知設定"),
-        //         onTap: () {
-        //           pickTime(context);
-        //         },
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        // ----------------------------------------------
-
         // 重要度・緊急度を選択するようのPopUpMenu
-        // ----------------------------------------------
         Row(
           children: [
             Expanded(
               child: ListTile(
                 contentPadding: const EdgeInsets.only(left: 25),
                 leading: const Icon(Icons.check_box_outlined),
-                title: Text(_selectCategory),
+                title: Text(selectCategory.toString().isEmpty
+                    ? _selectCategory
+                    : selectCategory),
                 onTap: () {
                   showMenu(
                     context: context,
@@ -295,7 +94,6 @@ class TodoMake extends ConsumerWidget {
                         child: const Text("第１領域 : 緊急かつ重要",
                             style: TextStyle(fontSize: 12)),
                         onTap: () {
-                          print("第１領域 : 緊急かつ重要");
                           _selectCategoryNotifier
                               .select(Category.importantUrgent);
                         },
@@ -304,7 +102,6 @@ class TodoMake extends ConsumerWidget {
                         child: const Text("第２領域 : 緊急でないが重要",
                             style: TextStyle(fontSize: 12)),
                         onTap: () {
-                          print("第２領域 : 緊急でないが重要");
                           _selectCategoryNotifier
                               .select(Category.importantUnUrgent);
                         },
@@ -313,7 +110,6 @@ class TodoMake extends ConsumerWidget {
                         child: const Text("第３領域 : 緊急だが重要でない",
                             style: TextStyle(fontSize: 12)),
                         onTap: () {
-                          print("第３領域 : 緊急だが重要でない");
                           _selectCategoryNotifier
                               .select(Category.unImportantUrgent);
                         },
@@ -322,7 +118,6 @@ class TodoMake extends ConsumerWidget {
                         child: const Text("第４領域 : 緊急でなく重要でもない",
                             style: TextStyle(fontSize: 12)),
                         onTap: () {
-                          print("第４領域 : 緊急でなく重要でもない");
                           _selectCategoryNotifier
                               .select(Category.unImportantUnUrgent);
                         },
@@ -334,6 +129,7 @@ class TodoMake extends ConsumerWidget {
             ),
           ],
         ),
+
         Row(
           children: [
             Expanded(
@@ -342,13 +138,34 @@ class TodoMake extends ConsumerWidget {
                 leading: const Icon(Icons.timer),
                 title: Text(_notificationDate),
                 onTap: () {
-                  pickTime(context);
+                  showCupertinoModalPopup<void>(
+                    context: context,
+                    builder: (BuildContext context) => Container(
+                      height: 216,
+                      padding: const EdgeInsets.only(top: 6.0),
+                      margin: EdgeInsets.only(
+                        bottom: MediaQuery.of(context).viewInsets.bottom,
+                      ),
+                      color: CupertinoColors.inactiveGray.resolveFrom(context),
+                      child: SafeArea(
+                        top: false,
+                        child: CupertinoDatePicker(
+                          mode: CupertinoDatePickerMode.dateAndTime,
+                          onDateTimeChanged: (value) {
+                            ref.read(notificationDate.notifier).edit(value);
+                          },
+                          initialDateTime: DateTime.now(),
+                          // backgroundColor:
+                          //     CupertinoColors.inactiveGray.resolveFrom(context),
+                        ),
+                      ),
+                    ),
+                  );
                 },
               ),
             ),
           ],
         ),
-        // ----------------------------------------------
 
         const SizedBox(height: 30),
         Container(
@@ -357,27 +174,30 @@ class TodoMake extends ConsumerWidget {
           child: ElevatedButton(
             onPressed: () {
               // テキストnullチェック
-              // if (_todoTitleNotifier.brankCheck(_todoTitle) != null) {
-              //   showDialog(
-              //     context: context,
-              //     builder: (_) => AlertDialog(
-              //       title: const Text(
-              //         "タスクを入力してください",
-              //         style: TextStyle(fontSize: 16),
-              //       ),
-              //       actions: [
-              //         ElevatedButton(
-              //             onPressed: () {
-              //               Navigator.of(context).pop(context);
-              //             },
-              //             child: const Text("OK"))
-              //       ],
-              //     ),
-              //   );
-              //   return;
-              // }
+              _todoTitleNotifier.editTitle(_todoTitle.text);
+              if (_todoTitleNotifier.brankCheck(_todoTitle) != null) {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: const Text(
+                      "タスクを入力してください",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    actions: [
+                      ElevatedButton(
+                          onPressed: () {
+                            Navigator.of(context).pop(context);
+                          },
+                          child: const Text("OK"))
+                    ],
+                  ),
+                );
+                return;
+              }
 
               // カテゴリー未選択時
+              if (_selectCategory.isEmpty) {}
+
               if (_selectCategory == defImpUrgText) {
                 showDialog(
                   context: context,
@@ -402,7 +222,7 @@ class TodoMake extends ConsumerWidget {
               TodoModel _todo = TodoModel(
                   1,
                   _todoTitle.text,
-                  "",
+                  _notificationDate,
                   DateFormat('yyyy/MM/dd').format(DateTime.now()),
                   false,
                   // _selected);
@@ -411,8 +231,10 @@ class TodoMake extends ConsumerWidget {
                   DateTime.now(),
                   DateTime.now());
               _todoModelNotifier.addTodo(_todo);
-              _todoTitle.text = "";
-              _selectCategoryNotifier.clear(_selectCategory.toString());
+              _todoTitleNotifier.clear();
+              _todoTitleTextNotifier.clear();
+              _selectCategoryNotifier.clear();
+              _notificationDateNotifier.clear();
               Navigator.of(context, rootNavigator: true).pop(context);
             },
             child: const Text("保存", style: TextStyle(fontSize: 18)),
