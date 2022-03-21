@@ -17,6 +17,9 @@ class HomeScreen extends ConsumerWidget {
     final _todoTitle = ref.watch(todoTitleProvider);
     final _todoTitleNotifier = ref.watch(todoTitleProvider.notifier);
 
+    final _todoTitleText = ref.watch(todoTitleTextNotifier);
+    final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
+
     final _selectShowMenuCategory = ref.watch(selectCategoryProvider);
     final _selectShowMenuCategoryNotifier =
         ref.watch(selectCategoryProvider.notifier);
@@ -49,9 +52,9 @@ class HomeScreen extends ConsumerWidget {
               },
             ).then((value) {
               print("showDialog Close");
-              _todoTitle.text = "";
-              _selectShowMenuCategoryNotifier
-                  .clear(_selectShowMenuCategory.toString());
+              _todoTitleTextNotifier.clear();
+              _todoTitleNotifier.clear();
+              _selectShowMenuCategoryNotifier.clear();
             });
           },
           child: const Icon(Icons.add),
