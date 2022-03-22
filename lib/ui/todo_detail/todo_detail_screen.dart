@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_matrix/common/function/common_func.dart';
 import 'package:todo_matrix/model/TodoModel.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
@@ -14,9 +15,6 @@ class TodoDetail extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final _todoModel = ref.watch(todoModelProvider);
     final _todoModelNotifier = ref.watch(todoModelProvider.notifier);
-
-    final _todoTitle = ref.watch(todoTitleProvider);
-    final _todoTitleNotifier = ref.watch(todoTitleProvider.notifier);
 
     final _todoTitleText = ref.watch(todoTitleTextNotifier);
     final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
@@ -39,7 +37,7 @@ class TodoDetail extends ConsumerWidget {
               flex: 9,
               child: Container(
                 // color: selectColor[300],
-                color: selectColor[100],
+                color: isDarkMode(context) ? null : selectColor[100],
                 padding: const EdgeInsets.all(10),
                 // margin: const EdgeInsets.all(5),
 
@@ -61,8 +59,9 @@ class TodoDetail extends ConsumerWidget {
                             _todoModelNotifier.deleteTodo(index);
                           },
                           child: Card(
-                            // color: selectColor[200],
-                            color: selectColor[50],
+                            color: isDarkMode(context)
+                                ? selectColor[300]
+                                : selectColor[50],
                             child: ListTile(
                               onTap: () {
                                 print("Card onTap");
@@ -83,16 +82,20 @@ class TodoDetail extends ConsumerWidget {
                                   context: context,
                                   builder: (BuildContext context) {
                                     print("ontap : ${index}");
-                                    _todoTitleNotifier
-                                        .editTitle(_todoModel[index].title);
+                                    // _todoTitleNotifier
+                                    //     .editTitle(_todoModel[index].title);
                                     // _notificationDateNotifier.editStringDate(
                                     //     _todoModel[index].subTitle);
-                                    return TodoMake(index, selectCategory,
-                                        _todoModel[index].subTitle);
+                                    return TodoMake(
+                                      index,
+                                      selectCategory,
+                                      _todoModel[index].subTitle,
+                                      "",
+                                    );
                                   },
                                 ).then((value) {
                                   print("showDialog Close");
-                                  _todoTitleNotifier.clear();
+                                  // _todoTitleNotifier.clear();
                                   _todoTitleTextNotifier.clear();
                                   _selectShowMenuCategoryNotifier.clear();
                                   // _notificationDateNotifier.clear();
@@ -146,11 +149,16 @@ class TodoDetail extends ConsumerWidget {
               isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
-                return TodoMake("", selectCategory, "");
+                return TodoMake(
+                  "",
+                  selectCategory,
+                  "",
+                  "",
+                );
               },
             ).then((value) {
               print("showDialog Close");
-              _todoTitleNotifier.clear();
+              // _todoTitleNotifier.clear();
               _todoTitleTextNotifier.clear();
               _selectShowMenuCategoryNotifier.clear();
             });

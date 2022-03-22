@@ -9,10 +9,12 @@ final _formKey = GlobalKey<FormState>();
 
 class TodoMake extends ConsumerWidget {
   final index;
+  final title;
   final selectCategory;
   final notificateionDate;
 
-  const TodoMake(this.index, this.selectCategory, this.notificateionDate,
+  const TodoMake(
+      this.index, this.selectCategory, this.notificateionDate, this.title,
       {Key? key})
       : super(key: key);
 
@@ -24,11 +26,15 @@ class TodoMake extends ConsumerWidget {
     final _todoModel = ref.watch(todoModelProvider);
     final _todoModelNotifier = ref.watch(todoModelProvider.notifier);
 
-    final _todoTitle = ref.watch(todoTitleProvider);
-    final _todoTitleNotifier = ref.watch(todoTitleProvider.notifier);
-
     final _todoTitleText = ref.watch(todoTitleTextNotifier);
     final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
+
+    // TextEditingController _todoTitleTextEditController =
+    //     TextEditingController(text: _todoTitleText);
+    final _todoTitleTextEditingController =
+        ref.watch(todoTitleTextEditingProvider);
+    final _todoTitleTextEditingControllerNotifier =
+        ref.watch(todoTitleTextEditingProvider.notifier);
 
     final _selectCategory = ref.watch(selectCategoryProvider);
     final _selectCategoryNotifier = ref.watch(selectCategoryProvider.notifier);
@@ -45,7 +51,7 @@ class TodoMake extends ConsumerWidget {
           child: TextFormField(
             autofocus: true,
             decoration: const InputDecoration(hintText: "新しいタスク"),
-            controller: _todoTitle,
+            controller: _todoTitleTextEditingController,
             key: _formKey,
             validator: (value) {
               if (value == "") {
@@ -174,8 +180,7 @@ class TodoMake extends ConsumerWidget {
           child: ElevatedButton(
             onPressed: () {
               // テキストnullチェック
-              _todoTitleNotifier.editTitle(_todoTitle.text);
-              if (_todoTitleNotifier.brankCheck(_todoTitle) != null) {
+              if (_todoTitleTextEditingController.text.isEmpty) {
                 showDialog(
                   context: context,
                   builder: (_) => AlertDialog(
@@ -221,7 +226,7 @@ class TodoMake extends ConsumerWidget {
               // Todoモデルに保存
               TodoModel _todo = TodoModel(
                   1,
-                  _todoTitle.text,
+                  _todoTitleTextEditingController.text,
                   _notificationDate,
                   DateFormat('yyyy/MM/dd').format(DateTime.now()),
                   false,
@@ -231,8 +236,8 @@ class TodoMake extends ConsumerWidget {
                   DateTime.now(),
                   DateTime.now());
               _todoModelNotifier.addTodo(_todo);
-              _todoTitleNotifier.clear();
-              _todoTitleTextNotifier.clear();
+              // _todoTitleNotifier.clear();
+              // _todoTitleTextNotifier.clear();
               _selectCategoryNotifier.clear();
               _notificationDateNotifier.clear();
               Navigator.of(context, rootNavigator: true).pop(context);

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_matrix/common/function/common_func.dart';
 import 'package:todo_matrix/component/todo_list_view_model.dart';
 import 'package:todo_matrix/model/TodoModel.dart';
 import 'package:todo_matrix/ui/home_divide/home_divide_view_model.dart';
 import 'package:todo_matrix/ui/home_grid/home_grid_view_model.dart';
 import 'package:todo_matrix/ui/todo_detail/todo_detail_screen.dart';
-import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 enum Category {
@@ -168,7 +168,9 @@ class HomeDivide extends ConsumerWidget {
                                   );
                                 },
                                 child: Container(
-                                  color: _impUrgColor[100],
+                                  color: isDarkMode(context)
+                                      ? null
+                                      : _impUrgColor[100],
                                   child: ListView(
                                     children: [
                                       // Todo0件の場合
@@ -177,8 +179,9 @@ class HomeDivide extends ConsumerWidget {
                                         // TODO 分岐方法を検討
                                         if (todo.category == ImportantUrgent)
                                           Card(
-                                            color: _impUrgColor[50],
-                                            // color: _impUrgColor[300],
+                                            color: isDarkMode(context)
+                                                ? _impUrgColor[300]
+                                                : _impUrgColor[50],
                                             child: CheckboxListTile(
                                               dense: true,
                                               contentPadding:
@@ -220,7 +223,10 @@ class HomeDivide extends ConsumerWidget {
                                         );
                                       },
                                       child: Container(
-                                        color: _impUnUrgColor[100],
+                                        color: isDarkMode(context)
+                                            ? null
+                                            : _impUnUrgColor[100],
+                                        // color: _impUnUrgColor[100],
                                         child: ListView(
                                           children: [
                                             // Todo0件の場合
@@ -230,8 +236,9 @@ class HomeDivide extends ConsumerWidget {
                                               if (todo.category ==
                                                   ImportantUnUrgent)
                                                 Card(
-                                                  color: _impUnUrgColor[50],
-                                                  // color: _impUnUrgColor[300],
+                                                  color: isDarkMode(context)
+                                                      ? _impUnUrgColor[300]
+                                                      : _impUnUrgColor[50],
                                                   child: CheckboxListTile(
                                                     dense: true,
                                                     contentPadding:
@@ -286,7 +293,10 @@ class HomeDivide extends ConsumerWidget {
                                         );
                                       },
                                       child: Container(
-                                        color: _unImpUrgColor[100],
+                                        color: isDarkMode(context)
+                                            ? null
+                                            : _unImpUrgColor[100],
+                                        // color: _unImpUrgColor[100],
                                         child: ListView(
                                           children: [
                                             // Todo0件の場合
@@ -296,8 +306,9 @@ class HomeDivide extends ConsumerWidget {
                                               if (todo.category ==
                                                   UnImportantUrgent)
                                                 Card(
-                                                  color: _unImpUrgColor[50],
-                                                  // color: _unImpUrgColor[300],
+                                                  color: isDarkMode(context)
+                                                      ? _unImpUrgColor[300]
+                                                      : _unImpUrgColor[50],
                                                   child: CheckboxListTile(
                                                     dense: true,
                                                     contentPadding:
@@ -341,7 +352,9 @@ class HomeDivide extends ConsumerWidget {
                                         );
                                       },
                                       child: Container(
-                                        color: _unImpUnUrgColor[100],
+                                        color: isDarkMode(context)
+                                            ? null
+                                            : _unImpUnUrgColor[100],
                                         child: ListView(
                                           children: [
                                             for (final todo in _todoModel)
@@ -350,8 +363,9 @@ class HomeDivide extends ConsumerWidget {
                                               if (todo.category ==
                                                   UnImportantUnUrgent)
                                                 Card(
-                                                  color: _unImpUnUrgColor[50],
-                                                  // color: _unImpUnUrgColor[300],
+                                                  color: isDarkMode(context)
+                                                      ? _unImpUnUrgColor[300]
+                                                      : _unImpUnUrgColor[50],
                                                   child: CheckboxListTile(
                                                     dense: true,
                                                     contentPadding:
@@ -401,21 +415,21 @@ class HomeDivide extends ConsumerWidget {
     );
   }
 
-  // Todoリストのカード
-  _todoCard(MaterialColor color) {
-    return Card(
-      color: color[50],
-      // color: _impUrgColor[300],
-      child: CheckboxListTile(
-        dense: true,
-        contentPadding: const EdgeInsets.only(left: 5),
-        value: false,
-        // value: todo.isChecked,
-        // title: Text(todo.title, style: const TextStyle(fontSize: 16)),
-        onChanged: (val) {},
-      ),
-    );
-  }
+  // // Todoリストのカード
+  // _todoCard(MaterialColor color) {
+  //   return Card(
+  //     color: color[50],
+  //     // color: _impUrgColor[300],
+  //     child: CheckboxListTile(
+  //       dense: true,
+  //       contentPadding: const EdgeInsets.only(left: 5),
+  //       value: false,
+  //       // value: todo.isChecked,
+  //       // title: Text(todo.title, style: const TextStyle(fontSize: 16)),
+  //       onChanged: (val) {},
+  //     ),
+  //   );
+  // }
 
   // // TODO 後で消す？？？
   // _emptyTodo(BuildContext context, Category category) {
@@ -445,5 +459,5 @@ class HomeDivide extends ConsumerWidget {
 
   // TODO 詳細画面へ遷移するようのリストも追加する？？？
   // ListViewがいっぱいになると遷移できなくなる可能性がある
-  _moveTodoDetail() {}
+  // _moveTodoDetail() {}
 }

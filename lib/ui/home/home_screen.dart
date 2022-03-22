@@ -14,9 +14,6 @@ class HomeScreen extends ConsumerWidget {
     final _color = ref.watch(appColorProvider);
     final _colorNotifier = ref.watch(appColorProvider.notifier);
 
-    final _todoTitle = ref.watch(todoTitleProvider);
-    final _todoTitleNotifier = ref.watch(todoTitleProvider.notifier);
-
     final _todoTitleText = ref.watch(todoTitleTextNotifier);
     final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
 
@@ -48,12 +45,12 @@ class HomeScreen extends ConsumerWidget {
               isScrollControlled: true,
               context: context,
               builder: (BuildContext context) {
-                return TodoMake("", "", "");
+                return TodoMake("", "", "", "");
               },
             ).then((value) {
               print("showDialog Close");
               _todoTitleTextNotifier.clear();
-              _todoTitleNotifier.clear();
+              // _todoTitleNotifier.clear();
               _selectShowMenuCategoryNotifier.clear();
             });
           },

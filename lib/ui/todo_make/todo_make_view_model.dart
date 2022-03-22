@@ -108,8 +108,7 @@ class TodoTitleTextNotifier extends StateNotifier<String> {
 }
 
 // Todoタイトル用Provider（TextEditingController）
-final textTitleController = TextEditingController();
-final todoTitleProvider =
+final todoTitleTextEditingProvider =
     StateNotifierProvider<TodoTitleNotifier, TextEditingController>(
   (ref) => TodoTitleNotifier(TextEditingController()),
 );
