@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_matrix/model/TodoModel.dart';
+import 'package:todo_matrix/model/select_category_model.dart';
+import 'package:todo_matrix/model/todo_model.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -62,17 +63,12 @@ class TodoMake extends ConsumerWidget {
             },
             onChanged: (value) {
               print("onChangeイベント:" + value);
-              // _selectCategoryNotifier.edit(selectCategory);
-              // _notificationDateNotifier.editStringDate(notificateionDate);
             },
             onSaved: (value) {
               print("onSaveイベント:" + value!);
             },
             onFieldSubmitted: (value) {
               print("onFieldSubmittedイベント:" + value);
-              // _todoTitleNotifier.editTitle(value);
-              // _selectCategoryNotifier.edit(selectCategory);
-              // _notificationDateNotifier.editStringDate(notificateionDate);
             },
           ),
         ),
@@ -144,6 +140,7 @@ class TodoMake extends ConsumerWidget {
                 leading: const Icon(Icons.timer),
                 title: Text(_notificationDate),
                 onTap: () {
+                  // Todo編集
                   showCupertinoModalPopup<void>(
                     context: context,
                     builder: (BuildContext context) => Container(
@@ -158,7 +155,8 @@ class TodoMake extends ConsumerWidget {
                         child: CupertinoDatePicker(
                           mode: CupertinoDatePickerMode.dateAndTime,
                           onDateTimeChanged: (value) {
-                            ref.read(notificationDate.notifier).edit(value);
+                            // ref.read(notificationDate.notifier).edit(value);
+                            _notificationDateNotifier.edit(value);
                           },
                           initialDateTime: DateTime.now(),
                           // backgroundColor:
@@ -201,8 +199,6 @@ class TodoMake extends ConsumerWidget {
               }
 
               // カテゴリー未選択時
-              if (_selectCategory.isEmpty) {}
-
               if (_selectCategory == defImpUrgText) {
                 showDialog(
                   context: context,
@@ -223,9 +219,12 @@ class TodoMake extends ConsumerWidget {
                 return;
               }
 
+              // TODO 暫定対応
+              countID++;
+
               // Todoモデルに保存
               TodoModel _todo = TodoModel(
-                  1,
+                  countID,
                   _todoTitleTextEditingController.text,
                   _notificationDate,
                   DateFormat('yyyy/MM/dd').format(DateTime.now()),
@@ -236,8 +235,6 @@ class TodoMake extends ConsumerWidget {
                   DateTime.now(),
                   DateTime.now());
               _todoModelNotifier.addTodo(_todo);
-              // _todoTitleNotifier.clear();
-              // _todoTitleTextNotifier.clear();
               _selectCategoryNotifier.clear();
               _notificationDateNotifier.clear();
               Navigator.of(context, rootNavigator: true).pop(context);

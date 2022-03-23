@@ -33,7 +33,7 @@ class DrawerScreen extends ConsumerWidget {
                   onChanged: (value) {
                     // ダークモード切替
                     _darkModeSwitchNotifier.change(value);
-                    _darkModeSwitch ? ThemeData.light() : ThemeData.light();
+                    _darkModeSwitch ? ThemeData.dark() : ThemeData.light();
                   },
                   value: _darkModeSwitch,
                 ),

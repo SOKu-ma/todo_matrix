@@ -11,8 +11,8 @@ class HomeGrid extends ConsumerWidget {
     final _color = ref.watch(appColorProvider);
     final _colorNotifier = ref.watch(appColorProvider.notifier);
 
-    final _verticalText = ref.watch(verticalText);
-    final _horizonalText = ref.watch(horizonalText);
+    final _verticalText = ref.watch(verticalTextProvider);
+    final _horizonalText = ref.watch(horizonalTextProvider);
 
     return Container(
       child: Row(

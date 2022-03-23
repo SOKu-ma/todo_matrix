@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_matrix/common/function/common_func.dart';
-import 'package:todo_matrix/model/TodoModel.dart';
+import 'package:todo_matrix/model/todo_model.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
@@ -65,6 +65,13 @@ class TodoDetail extends ConsumerWidget {
                             child: ListTile(
                               onTap: () {
                                 print("Card onTap");
+                                // Todoタイトル、カテゴリ、通知設定の状態を更新
+                                _todoTitleTextNotifier
+                                    .editTitle(_todoModel[index].title);
+                                _selectShowMenuCategoryNotifier
+                                    .edit(_todoModel[index].category);
+                                _notificationDateNotifier
+                                    .editStringDate(_todoModel[index].subTitle);
                                 showModalBottomSheet<void>(
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
@@ -82,10 +89,6 @@ class TodoDetail extends ConsumerWidget {
                                   context: context,
                                   builder: (BuildContext context) {
                                     print("ontap : ${index}");
-                                    // _todoTitleNotifier
-                                    //     .editTitle(_todoModel[index].title);
-                                    // _notificationDateNotifier.editStringDate(
-                                    //     _todoModel[index].subTitle);
                                     return TodoMake(
                                       index,
                                       selectCategory,
@@ -138,6 +141,8 @@ class TodoDetail extends ConsumerWidget {
         margin: const EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(
           onPressed: () {
+            // Todoタイトル、カテゴリ、通知設定の状態を更新
+            _selectShowMenuCategoryNotifier.edit(selectCategory);
             showModalBottomSheet<void>(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
