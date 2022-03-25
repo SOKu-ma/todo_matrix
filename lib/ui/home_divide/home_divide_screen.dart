@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_matrix/common/function/common_func.dart';
 import 'package:todo_matrix/component/todo_list_view_model.dart';
-import 'package:todo_matrix/model/TodoModel.dart';
+import 'package:todo_matrix/model/select_category_model.dart';
+import 'package:todo_matrix/model/todo_model.dart';
 import 'package:todo_matrix/ui/home_divide/home_divide_view_model.dart';
-import 'package:todo_matrix/ui/home_grid/home_grid_view_model.dart';
 import 'package:todo_matrix/ui/todo_detail/todo_detail_screen.dart';
-import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 enum Category {
   importantUrgent, // 第1領域 緊急かつ重要
@@ -20,14 +19,14 @@ class HomeDivide extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final _verticalText = ref.watch(verticalText);
-    final _horizonalText = ref.watch(horizonalText);
-    final _denaialText = ref.watch(denaialText);
+    final _verticalText = ref.watch(verticalTextProvider);
+    final _horizonalText = ref.watch(horizonalTextProvider);
+    final _denaialText = ref.watch(denaialTextProvider);
 
-    final _impUrgColor = ref.watch(impUrgColor);
-    final _impUnUrgColor = ref.watch(impUnUrgColor);
-    final _unImpUrgColor = ref.watch(unImpUrgColor);
-    final _unImpUnUrgColor = ref.watch(unImpUnUrgColor);
+    final _impUrgColor = ref.watch(impUrgColorProvider);
+    final _impUnUrgColor = ref.watch(impUnUrgColorProvider);
+    final _unImpUrgColor = ref.watch(unImpUrgColorProvider);
+    final _unImpUnUrgColor = ref.watch(unImpUnUrgColorProvider);
 
     final _isChecked = ref.watch(isTodoCheckBoxProvider);
     final _isCheckedNotifier = ref.watch(isTodoCheckBoxProvider.notifier);

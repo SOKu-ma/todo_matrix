@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_matrix/model/TodoModel.dart';
+import 'package:todo_matrix/model/select_category_model.dart';
+import 'package:todo_matrix/model/todo_model.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 final _formKey = GlobalKey<FormState>();
@@ -20,21 +21,12 @@ class TodoMake extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final _selected = ref.watch(selectCategoryProvider);
-    // final _selectedNotifier = ref.watch(selectCategoryProvider.notifier);
-
-    final _todoModel = ref.watch(todoModelProvider);
     final _todoModelNotifier = ref.watch(todoModelProvider.notifier);
 
-    final _todoTitleText = ref.watch(todoTitleTextNotifier);
     final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
 
-    // TextEditingController _todoTitleTextEditController =
-    //     TextEditingController(text: _todoTitleText);
     final _todoTitleTextEditingController =
         ref.watch(todoTitleTextEditingProvider);
-    final _todoTitleTextEditingControllerNotifier =
-        ref.watch(todoTitleTextEditingProvider.notifier);
 
     final _selectCategory = ref.watch(selectCategoryProvider);
     final _selectCategoryNotifier = ref.watch(selectCategoryProvider.notifier);
@@ -62,17 +54,12 @@ class TodoMake extends ConsumerWidget {
             },
             onChanged: (value) {
               print("onChangeイベント:" + value);
-              // _selectCategoryNotifier.edit(selectCategory);
-              // _notificationDateNotifier.editStringDate(notificateionDate);
             },
             onSaved: (value) {
               print("onSaveイベント:" + value!);
             },
             onFieldSubmitted: (value) {
               print("onFieldSubmittedイベント:" + value);
-              // _todoTitleNotifier.editTitle(value);
-              // _selectCategoryNotifier.edit(selectCategory);
-              // _notificationDateNotifier.editStringDate(notificateionDate);
             },
           ),
         ),
@@ -144,6 +131,7 @@ class TodoMake extends ConsumerWidget {
                 leading: const Icon(Icons.timer),
                 title: Text(_notificationDate),
                 onTap: () {
+                  // Todo編集
                   showCupertinoModalPopup<void>(
                     context: context,
                     builder: (BuildContext context) => Container(
@@ -158,7 +146,7 @@ class TodoMake extends ConsumerWidget {
                         child: CupertinoDatePicker(
                           mode: CupertinoDatePickerMode.dateAndTime,
                           onDateTimeChanged: (value) {
-                            ref.read(notificationDate.notifier).edit(value);
+                            _notificationDateNotifier.edit(value);
                           },
                           initialDateTime: DateTime.now(),
                           // backgroundColor:
@@ -201,8 +189,6 @@ class TodoMake extends ConsumerWidget {
               }
 
               // カテゴリー未選択時
-              if (_selectCategory.isEmpty) {}
-
               if (_selectCategory == defImpUrgText) {
                 showDialog(
                   context: context,
@@ -223,21 +209,36 @@ class TodoMake extends ConsumerWidget {
                 return;
               }
 
-              // Todoモデルに保存
-              TodoModel _todo = TodoModel(
-                  1,
-                  _todoTitleTextEditingController.text,
-                  _notificationDate,
-                  DateFormat('yyyy/MM/dd').format(DateTime.now()),
-                  false,
-                  // _selected);
-                  _selectCategory,
-                  1,
-                  DateTime.now(),
-                  DateTime.now());
-              _todoModelNotifier.addTodo(_todo);
-              // _todoTitleNotifier.clear();
-              // _todoTitleTextNotifier.clear();
+              if (index.toString().isEmpty) {
+                // TODO 暫定対応
+                countID++;
+                // Todoモデルに保存
+                TodoModel _todo = TodoModel(
+                    index.toString().isEmpty ? countID : index,
+                    _todoTitleTextEditingController.text,
+                    _notificationDate,
+                    DateFormat('yyyy/MM/dd').format(DateTime.now()),
+                    false,
+                    _selectCategory,
+                    1,
+                    DateTime.now(),
+                    DateTime.now());
+                _todoModelNotifier.addTodo(_todo);
+              } else {
+                // Todoモデルの値を更新
+                TodoModel _todo = TodoModel(
+                    index.toString().isEmpty ? countID : index,
+                    _todoTitleTextEditingController.text,
+                    _notificationDate,
+                    DateFormat('yyyy/MM/dd').format(DateTime.now()),
+                    false,
+                    _selectCategory,
+                    1,
+                    DateTime.now(),
+                    DateTime.now());
+                _todoModelNotifier.editTodo(_todo);
+              }
+              _todoTitleTextNotifier.clear();
               _selectCategoryNotifier.clear();
               _notificationDateNotifier.clear();
               Navigator.of(context, rootNavigator: true).pop(context);

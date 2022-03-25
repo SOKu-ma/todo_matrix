@@ -31,7 +31,7 @@ class HomeScreen extends ConsumerWidget {
       floatingActionButton: Container(
         margin: const EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(
-          backgroundColor: _color,
+          // backgroundColor: _color,
           foregroundColor: Colors.white,
           onPressed: () {
             showModalBottomSheet<void>(

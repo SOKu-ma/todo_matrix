@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_matrix/common/function/common_func.dart';
-import 'package:todo_matrix/model/TodoModel.dart';
+import 'package:todo_matrix/model/todo_model.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
@@ -9,21 +9,21 @@ class TodoDetail extends ConsumerWidget {
   final selectCategory;
   final selectColor;
 
-  TodoDetail(this.selectCategory, this.selectColor, {Key? key})
+  const TodoDetail(this.selectCategory, this.selectColor, {Key? key})
       : super(key: key);
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final _todoModel = ref.watch(todoModelProvider);
     final _todoModelNotifier = ref.watch(todoModelProvider.notifier);
 
-    final _todoTitleText = ref.watch(todoTitleTextNotifier);
     final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
 
-    final _selectShowMenuCategory = ref.watch(selectCategoryProvider);
+    final _todoTitleTextEditingNotifier =
+        ref.watch(todoTitleTextEditingProvider.notifier);
+
     final _selectShowMenuCategoryNotifier =
         ref.watch(selectCategoryProvider.notifier);
 
-    final _notificationDate = ref.watch(notificationDate);
     final _notificationDateNotifier = ref.watch(notificationDate.notifier);
 
     return Scaffold(
@@ -65,6 +65,15 @@ class TodoDetail extends ConsumerWidget {
                             child: ListTile(
                               onTap: () {
                                 print("Card onTap");
+                                // Todoタイトル、カテゴリ、通知設定の状態を更新
+                                _todoTitleTextNotifier
+                                    .editTitle(_todoModel[index].title);
+                                _todoTitleTextEditingNotifier
+                                    .editTitle(_todoModel[index].title);
+                                _selectShowMenuCategoryNotifier
+                                    .edit(_todoModel[index].category);
+                                _notificationDateNotifier
+                                    .editStringDate(_todoModel[index].subTitle);
                                 showModalBottomSheet<void>(
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
@@ -82,10 +91,6 @@ class TodoDetail extends ConsumerWidget {
                                   context: context,
                                   builder: (BuildContext context) {
                                     print("ontap : ${index}");
-                                    // _todoTitleNotifier
-                                    //     .editTitle(_todoModel[index].title);
-                                    // _notificationDateNotifier.editStringDate(
-                                    //     _todoModel[index].subTitle);
                                     return TodoMake(
                                       index,
                                       selectCategory,
@@ -95,18 +100,20 @@ class TodoDetail extends ConsumerWidget {
                                   },
                                 ).then((value) {
                                   print("showDialog Close");
-                                  // _todoTitleNotifier.clear();
                                   _todoTitleTextNotifier.clear();
                                   _selectShowMenuCategoryNotifier.clear();
-                                  // _notificationDateNotifier.clear();
+                                  _notificationDateNotifier.clear();
                                 });
                               },
                               dense: true,
                               contentPadding: const EdgeInsets.only(left: 5),
                               trailing: Checkbox(
-                                onChanged: (val) {
+                                onChanged: (value) {
                                   print("Checkbox onChanged");
+                                  _todoModelNotifier.cheaked(
+                                      value!, _todoModel[index].id);
                                 },
+                                // value: _isChecked,
                                 value: _todoModel[index].isChecked,
                               ),
                               title: Text(
@@ -138,6 +145,10 @@ class TodoDetail extends ConsumerWidget {
         margin: const EdgeInsets.only(bottom: 70),
         child: FloatingActionButton(
           onPressed: () {
+            // Todoタイトル、カテゴリ、通知設定の状態を更新
+            _todoTitleTextEditingNotifier.clear();
+            _todoTitleTextNotifier.clear();
+            _selectShowMenuCategoryNotifier.edit(selectCategory);
             showModalBottomSheet<void>(
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
@@ -158,7 +169,7 @@ class TodoDetail extends ConsumerWidget {
               },
             ).then((value) {
               print("showDialog Close");
-              // _todoTitleNotifier.clear();
+              _todoTitleTextEditingNotifier.clear();
               _todoTitleTextNotifier.clear();
               _selectShowMenuCategoryNotifier.clear();
             });

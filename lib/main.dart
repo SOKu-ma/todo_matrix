@@ -18,12 +18,12 @@ class MyApp extends ConsumerWidget {
     final _darkModeSwitch = ref.watch(darkModeSwitchProvider);
 
     return MaterialApp(
-      // theme:
-      //     _darkModeSwitch ? ThemeData.light() : ThemeData(primaryColor: _color),
-      theme: ThemeData(
-        primarySwatch: _color,
-      ),
-      darkTheme: ThemeData.dark(),
+      theme:
+          _darkModeSwitch ? ThemeData.dark() : ThemeData(primarySwatch: _color),
+      // theme: ThemeData(
+      //   primarySwatch: _color,
+      // ),
+      // darkTheme: ThemeData.dark(),
       home: const HomeScreen(),
     );
   }
