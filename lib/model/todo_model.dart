@@ -17,15 +17,16 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
 
   // Todo編集メソッド
   void editTodo(TodoModel todo) {
-    // List<TodoModel> _state = state;
-
-    // 編集対象のTodoをidで検索
-    // TodoModel _state = [
-    //   for (final _todo in state)
-    //     if (todo.id == _todo.id)
-    // ];
-
-    state = [];
+    List<TodoModel> _state = [];
+    for (final _todo in state) {
+      if (_todo.id == todo.id) {
+        _todo.title = todo.title;
+        _todo.category = todo.category;
+        _todo.subTitle = todo.subTitle;
+      }
+      _state = [..._state, _todo];
+    }
+    state = _state;
   }
 
   // Todo並べ替えメソッド
@@ -54,12 +55,20 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
     state = [for (final todo in state) todo];
   }
 
+  // Todoのチェック切替メソッド
+  void cheaked(bool value, int id) {
+    List<TodoModel> _state = [];
+    for (final _todo in state) {
+      if (_todo.id == id) {
+        _todo.isChecked = value;
+      }
+      _state = [..._state, _todo];
+    }
+    state = _state;
+  }
+
   // // Todoカテゴリー変更メソッド
   // void selectCategory(TodoModel todo) {
-  //   //
-  // }
-  // // Todoのチェック切替メソッド
-  // void cheak(TodoModel todo) {
   //   //
   // }
   // void countCategory(TodoModel tpdo) {
@@ -69,7 +78,7 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
 
 // TODO 暫定のID
 // TODO 後ほどランダム生成されるIDに修正
-int countID = 1;
+int countID = 100;
 
 // Todoモデル
 class TodoModel {

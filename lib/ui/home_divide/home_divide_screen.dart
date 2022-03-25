@@ -5,9 +5,7 @@ import 'package:todo_matrix/component/todo_list_view_model.dart';
 import 'package:todo_matrix/model/select_category_model.dart';
 import 'package:todo_matrix/model/todo_model.dart';
 import 'package:todo_matrix/ui/home_divide/home_divide_view_model.dart';
-import 'package:todo_matrix/ui/home_grid/home_grid_view_model.dart';
 import 'package:todo_matrix/ui/todo_detail/todo_detail_screen.dart';
-import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
 enum Category {
   importantUrgent, // 第1領域 緊急かつ重要
