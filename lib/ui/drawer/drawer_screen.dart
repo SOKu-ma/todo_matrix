@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:todo_matrix/common/common.dart';
 import 'package:todo_matrix/ui/drawer/drawer_view_model.dart';
+import 'package:todo_matrix/ui/user_detail/user_detail_screen.dart';
 
 class DrawerScreen extends ConsumerWidget {
   const DrawerScreen({Key? key, required this.color}) : super(key: key);
@@ -19,7 +20,7 @@ class DrawerScreen extends ConsumerWidget {
       body: SafeArea(
         child: ListView(
           children: [
-            _drawerAccount(),
+            _drawerAccount(context),
             const SizedBox(height: 40),
             Container(
                 margin: const EdgeInsets.only(left: 15, right: 10),
@@ -65,9 +66,12 @@ class DrawerScreen extends ConsumerWidget {
   }
 
   // アカウント情報
-  Widget _drawerAccount() {
+  Widget _drawerAccount(BuildContext context) {
     return ListTile(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute<void>(
+            builder: (BuildContext context) => UserDetail()));
+      },
       leading: const Icon(
         Icons.account_circle,
       ),

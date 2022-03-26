@@ -85,7 +85,7 @@ class TodoDetail extends ConsumerWidget {
                                   constraints: BoxConstraints(
                                       maxHeight:
                                           MediaQuery.of(context).size.height *
-                                              0.9),
+                                              0.85),
                                   isDismissible: true,
                                   isScrollControlled: true,
                                   context: context,
@@ -155,7 +155,7 @@ class TodoDetail extends ConsumerWidget {
               ),
               barrierColor: Colors.black.withAlpha(1),
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.9),
+                  maxHeight: MediaQuery.of(context).size.height * 0.85),
               isDismissible: true,
               isScrollControlled: true,
               context: context,
