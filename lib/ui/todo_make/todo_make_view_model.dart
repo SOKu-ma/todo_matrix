@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:todo_matrix/model/notification_string_date_model.dart';
 import 'package:todo_matrix/model/select_category_model.dart';
 
 // カテゴリー選択用Provider
@@ -8,42 +9,8 @@ final selectCategoryProvider =
   (ref) => SelectCategoryNotifier(defImpUrgText),
 );
 
-// // カテゴリー選択用（メニュー）
-// final selectShowMenuCategoryProvider =
-//     StateNotifierProvider<SelectShowMenuCategoryNotifier, String>(
-//         (ref) => SelectShowMenuCategoryNotifier(defImpUrgText));
-
-// class SelectShowMenuCategoryNotifier extends StateNotifier<String> {
-//   SelectShowMenuCategoryNotifier(state) : super(state);
-
-//   // カテゴリー切替
-//   select(String category) {
-//     switch (category) {
-//       case ImportantUrgent:
-//         state = ImportantUrgent;
-//         break;
-//       case ImportantUnUrgent:
-//         state = ImportantUnUrgent;
-//         break;
-//       case UnImportantUrgent:
-//         state = UnImportantUrgent;
-//         break;
-//       case UnImportantUnUrgent:
-//         state = UnImportantUnUrgent;
-//         break;
-//       default:
-//         break;
-//     }
-//   }
-
-//   // 選択カテゴリーをクリア
-//   clear(String category) {
-//     state = defImpUrgText;
-//   }
-// }
-
 //
-final todoTitleTextNotifier =
+final todoTitleTextProvider =
     StateNotifierProvider<TodoTitleTextNotifier, String>(
   (ref) => TodoTitleTextNotifier(""),
 );
@@ -89,50 +56,13 @@ class TodoTitleNotifier extends StateNotifier<TextEditingController> {
   }
 }
 
-const NotifiDefDate = "通知なし";
-const OnTheDay = "本日";
-const Tommorow = "明日";
+// 通知設定用(String)
+final notificationStringDateProvider =
+    StateNotifierProvider<NoticicationStringDate, String>(
+        (ref) => NoticicationStringDate(NotifiDefDate));
 
-// 通知設定用
-final notificationDate = StateNotifierProvider<NoticicationDate, String>(
-    (ref) => NoticicationDate(NotifiDefDate));
+// 通知設定用(DateTime)
+final notificationDateProvider = StateProvider((ref) => DateTime.now());
 
-class NoticicationDate extends StateNotifier<String> {
-  NoticicationDate(String state) : super(state);
-
-  // 時・分を取得
-  void edit(DateTime dateTime) {
-    final _checkDayAndYear = checkDayAndYear(dateTime);
-
-    state = _checkDayAndYear +
-        ' ' +
-        dateTime.hour.toString().padLeft(2, '0') +
-        ':' +
-        dateTime.minute.toString().padLeft(2, '0');
-  }
-
-  // 通知ラベルから時・分を取得
-  void editStringDate(String dateTime) {
-    state = dateTime;
-  }
-
-  // テキストをクリア
-  void clear() {
-    state = NotifiDefDate;
-  }
-
-  // 日付・年を判定
-  checkDayAndYear(DateTime dateTime) {
-    if (dateTime.year > DateTime.now().year) {
-      return "";
-    } else if (dateTime.day == DateTime.now().day) {
-      // 当日
-      return OnTheDay;
-    } else if (dateTime.day == DateTime.now().day + 1) {
-      // 明日
-      return Tommorow;
-    } else {
-      return dateTime.month.toString() + '/' + dateTime.day.toString();
-    }
-  }
-}
+// Todoタスク並び順用
+final todoOrderProvider = StateProvider((ref) => 1);

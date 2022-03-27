@@ -14,8 +14,8 @@ class HomeScreen extends ConsumerWidget {
     final _color = ref.watch(appColorProvider);
     final _colorNotifier = ref.watch(appColorProvider.notifier);
 
-    final _todoTitleText = ref.watch(todoTitleTextNotifier);
-    final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
+    final _todoTitleText = ref.watch(todoTitleTextProvider);
+    final _todoTitleTextNotifier = ref.watch(todoTitleTextProvider.notifier);
 
     final _selectShowMenuCategory = ref.watch(selectCategoryProvider);
     final _selectShowMenuCategoryNotifier =
@@ -40,7 +40,7 @@ class HomeScreen extends ConsumerWidget {
               ),
               barrierColor: Colors.black.withAlpha(1),
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.85),
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
               isDismissible: true,
               isScrollControlled: true,
               context: context,

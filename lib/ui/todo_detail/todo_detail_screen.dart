@@ -16,7 +16,7 @@ class TodoDetail extends ConsumerWidget {
     final _todoModel = ref.watch(todoModelProvider);
     final _todoModelNotifier = ref.watch(todoModelProvider.notifier);
 
-    final _todoTitleTextNotifier = ref.watch(todoTitleTextNotifier.notifier);
+    final _todoTitleTextNotifier = ref.watch(todoTitleTextProvider.notifier);
 
     final _todoTitleTextEditingNotifier =
         ref.watch(todoTitleTextEditingProvider.notifier);
@@ -24,7 +24,8 @@ class TodoDetail extends ConsumerWidget {
     final _selectShowMenuCategoryNotifier =
         ref.watch(selectCategoryProvider.notifier);
 
-    final _notificationDateNotifier = ref.watch(notificationDate.notifier);
+    final _notificationStringDateNotifier =
+        ref.watch(notificationStringDateProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -72,7 +73,7 @@ class TodoDetail extends ConsumerWidget {
                                     .editTitle(_todoModel[index].title);
                                 _selectShowMenuCategoryNotifier
                                     .edit(_todoModel[index].category);
-                                _notificationDateNotifier
+                                _notificationStringDateNotifier
                                     .editStringDate(_todoModel[index].subTitle);
                                 showModalBottomSheet<void>(
                                   shape: const RoundedRectangleBorder(
@@ -85,7 +86,7 @@ class TodoDetail extends ConsumerWidget {
                                   constraints: BoxConstraints(
                                       maxHeight:
                                           MediaQuery.of(context).size.height *
-                                              0.85),
+                                              0.9),
                                   isDismissible: true,
                                   isScrollControlled: true,
                                   context: context,
@@ -102,7 +103,7 @@ class TodoDetail extends ConsumerWidget {
                                   print("showDialog Close");
                                   _todoTitleTextNotifier.clear();
                                   _selectShowMenuCategoryNotifier.clear();
-                                  _notificationDateNotifier.clear();
+                                  _notificationStringDateNotifier.clear();
                                 });
                               },
                               dense: true,
@@ -111,7 +112,7 @@ class TodoDetail extends ConsumerWidget {
                                 onChanged: (value) {
                                   print("Checkbox onChanged");
                                   _todoModelNotifier.cheaked(
-                                      value!, _todoModel[index].id);
+                                      value!, index, selectCategory);
                                 },
                                 // value: _isChecked,
                                 value: _todoModel[index].isChecked,
@@ -155,7 +156,7 @@ class TodoDetail extends ConsumerWidget {
               ),
               barrierColor: Colors.black.withAlpha(1),
               constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.85),
+                  maxHeight: MediaQuery.of(context).size.height * 0.9),
               isDismissible: true,
               isScrollControlled: true,
               context: context,
