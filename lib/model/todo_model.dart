@@ -16,13 +16,17 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
   }
 
   // Todo編集メソッド
-  void editTodo(TodoModel todo) {
+  /// 対象のTodoを検索
+  /// Title,Category,notificationDateを書き換え
+  void editTodo(int index, String title, String category, String subTitle) {
     List<TodoModel> _state = [];
     for (final _todo in state) {
-      if (_todo.id == todo.id) {
-        _todo.title = todo.title;
-        _todo.category = todo.category;
-        _todo.subTitle = todo.subTitle;
+      if (_todo.category == category) {
+        if (_todo.order == index + 1) {
+          _todo.title = title;
+          _todo.category = category;
+          _todo.subTitle = subTitle;
+        }
       }
       _state = [..._state, _todo];
     }
@@ -56,36 +60,25 @@ class TodoModelNotifier extends StateNotifier<List<TodoModel>> {
   }
 
   // Todoのチェック切替メソッド
-  void cheaked(bool value, int id) {
+  void cheaked(bool value, int index, String category) {
     List<TodoModel> _state = [];
     for (final _todo in state) {
-      if (_todo.id == id) {
-        _todo.isChecked = value;
+      if (_todo.category == category) {
+        if (_todo.order == index + 1) {
+          _todo.isChecked = value;
+        }
+        _state = [..._state, _todo];
       }
-      _state = [..._state, _todo];
+      state = _state;
     }
-    state = _state;
   }
-
-  // // Todoカテゴリー変更メソッド
-  // void selectCategory(TodoModel todo) {
-  //   //
-  // }
-  // void countCategory(TodoModel tpdo) {
-  //   //
-  // }
 }
-
-// TODO 暫定のID
-// TODO 後ほどランダム生成されるIDに修正
-int countID = 100;
 
 // Todoモデル
 class TodoModel {
-  int id;
+  // int id;
   String title;
   String subTitle;
-  String? limitDate;
   bool isChecked;
   var category;
   int order;
@@ -93,10 +86,9 @@ class TodoModel {
   DateTime updateDate;
 
   TodoModel(
-    this.id,
+    // this.id,
     this.title,
     this.subTitle,
-    this.limitDate,
     this.isChecked,
     this.category,
     this.order,

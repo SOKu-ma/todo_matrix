@@ -1,0 +1,13 @@
+class TodoTitleTextNotifier extends StateNotifier<String> {
+  TodoTitleTextNotifier(String state) : super(state);
+
+  // テキストを編集
+  void editTitle(String text) {
+    state = text;
+  }
+
+  void clear() {
+    state = "";
+  }
+}
+
