@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_matrix/common/function/common_func.dart';
 import 'package:todo_matrix/model/todo_model.dart';
+import 'package:todo_matrix/ui/drawer/drawer_view_model.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_screen.dart';
 import 'package:todo_matrix/ui/todo_make/todo_make_view_model.dart';
 
@@ -27,6 +27,8 @@ class TodoDetail extends ConsumerWidget {
     final _notificationStringDateNotifier =
         ref.watch(notificationStringDateProvider.notifier);
 
+    final _darkModeSwitch = ref.watch(darkModeSwitchProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(selectCategory),
@@ -37,11 +39,8 @@ class TodoDetail extends ConsumerWidget {
             Expanded(
               flex: 9,
               child: Container(
-                // color: selectColor[300],
-                color: isDarkMode(context) ? null : selectColor[100],
+                color: _darkModeSwitch ? null : selectColor[100],
                 padding: const EdgeInsets.all(10),
-                // margin: const EdgeInsets.all(5),
-
                 child: ReorderableListView(
                   onReorder: ((oldIndex, newIndex) {
                     _todoModelNotifier.replaceTodo(
@@ -60,7 +59,7 @@ class TodoDetail extends ConsumerWidget {
                             _todoModelNotifier.deleteTodo(index);
                           },
                           child: Card(
-                            color: isDarkMode(context)
+                            color: _darkModeSwitch
                                 ? selectColor[300]
                                 : selectColor[50],
                             child: ListTile(
@@ -129,16 +128,6 @@ class TodoDetail extends ConsumerWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: SizedBox(
-                height: 50,
-                child: Container(
-                  height: 50,
-                  decoration: BoxDecoration(border: Border.all()),
-                ),
-              ),
-              flex: 1,
-            )
           ],
         ),
       ),

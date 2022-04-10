@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:todo_matrix/common/function/common_func.dart';
 import 'package:todo_matrix/component/todo_list_view_model.dart';
 import 'package:todo_matrix/model/select_category_model.dart';
 import 'package:todo_matrix/model/todo_model.dart';
+import 'package:todo_matrix/ui/drawer/drawer_view_model.dart';
 import 'package:todo_matrix/ui/home_divide/home_divide_view_model.dart';
 import 'package:todo_matrix/ui/todo_detail/todo_detail_screen.dart';
 
@@ -33,6 +33,8 @@ class HomeDivide extends ConsumerWidget {
 
     final _todoModel = ref.watch(todoModelProvider);
     final _todoModelNotifier = ref.watch(todoModelProvider.notifier);
+
+    final _darkModeSwitch = ref.watch(darkModeSwitchProvider);
 
     return Container(
       margin: const EdgeInsets.all(0),
@@ -167,7 +169,7 @@ class HomeDivide extends ConsumerWidget {
                                   );
                                 },
                                 child: Container(
-                                  color: isDarkMode(context)
+                                  color: _darkModeSwitch
                                       ? null
                                       : _impUrgColor[100],
                                   child: ListView(
@@ -178,7 +180,7 @@ class HomeDivide extends ConsumerWidget {
                                         // TODO 分岐方法を検討
                                         if (todo.category == ImportantUrgent)
                                           Card(
-                                            color: isDarkMode(context)
+                                            color: _darkModeSwitch
                                                 ? _impUrgColor[300]
                                                 : _impUrgColor[50],
                                             child: CheckboxListTile(
@@ -222,7 +224,7 @@ class HomeDivide extends ConsumerWidget {
                                         );
                                       },
                                       child: Container(
-                                        color: isDarkMode(context)
+                                        color: _darkModeSwitch
                                             ? null
                                             : _impUnUrgColor[100],
                                         // color: _impUnUrgColor[100],
@@ -235,7 +237,7 @@ class HomeDivide extends ConsumerWidget {
                                               if (todo.category ==
                                                   ImportantUnUrgent)
                                                 Card(
-                                                  color: isDarkMode(context)
+                                                  color: _darkModeSwitch
                                                       ? _impUnUrgColor[300]
                                                       : _impUnUrgColor[50],
                                                   child: CheckboxListTile(
@@ -292,7 +294,7 @@ class HomeDivide extends ConsumerWidget {
                                         );
                                       },
                                       child: Container(
-                                        color: isDarkMode(context)
+                                        color: _darkModeSwitch
                                             ? null
                                             : _unImpUrgColor[100],
                                         // color: _unImpUrgColor[100],
@@ -305,7 +307,7 @@ class HomeDivide extends ConsumerWidget {
                                               if (todo.category ==
                                                   UnImportantUrgent)
                                                 Card(
-                                                  color: isDarkMode(context)
+                                                  color: _darkModeSwitch
                                                       ? _unImpUrgColor[300]
                                                       : _unImpUrgColor[50],
                                                   child: CheckboxListTile(
@@ -351,7 +353,7 @@ class HomeDivide extends ConsumerWidget {
                                         );
                                       },
                                       child: Container(
-                                        color: isDarkMode(context)
+                                        color: _darkModeSwitch
                                             ? null
                                             : _unImpUnUrgColor[100],
                                         child: ListView(
@@ -362,7 +364,7 @@ class HomeDivide extends ConsumerWidget {
                                               if (todo.category ==
                                                   UnImportantUnUrgent)
                                                 Card(
-                                                  color: isDarkMode(context)
+                                                  color: _darkModeSwitch
                                                       ? _unImpUnUrgColor[300]
                                                       : _unImpUnUrgColor[50],
                                                   child: CheckboxListTile(
@@ -379,8 +381,6 @@ class HomeDivide extends ConsumerWidget {
                                                     onChanged: (val) {},
                                                   ),
                                                 ),
-                                            // _emptyTodo(context,
-                                            //     Category.unImportantUnUrgent),
                                           ],
                                         ),
                                       ),
@@ -398,15 +398,6 @@ class HomeDivide extends ConsumerWidget {
                 const SizedBox(width: 5)
                 // -- 2列目 END --
               ],
-            ),
-          ),
-          const SizedBox(height: 5),
-          Expanded(
-            flex: 1,
-            child: Container(
-              height: 50,
-              decoration: BoxDecoration(border: Border.all()),
-              // color: Colors.purple[100],
             ),
           ),
         ],
